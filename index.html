@@ -857,31 +857,6 @@
         window.onload = () => {
             syncMetaIntel(true);
             renderClans();
-            
-            document.getElementById('regForm').onsubmit = async (e) => {
-                e.preventDefault();
-                const btn = e.target.querySelector('button[type="submit"]');
-                try {
-                    btn.disabled = true; btn.innerHTML = "VERIFICANDO...";
-                    const p1 = await consultarActivision(document.getElementById('p1_id').value);
-                    const p2 = await consultarActivision(document.getElementById('p2_id').value);
-                    const p3 = await consultarActivision(document.getElementById('p3_id').value);
-                    const payRefVal = document.getElementById('payRef') ? document.getElementById('payRef').value.toUpperCase() : "PENDIENTE";
-                    
-                    clans.push({ 
-                        name: document.getElementById('clanName').value.toUpperCase(), 
-                        phone: document.getElementById('clanPhone').value,
-                        payRef: payRefVal || "PENDIENTE",
-                        checkedIn: false,
-                        players: [p1, p2, p3],
-                        fecha: new Date().toLocaleString()
-                    });
-                    localStorage.setItem('dae_clans_v10', JSON.stringify(clans));
-                    e.target.reset(); renderClans();
-                    showToast("UNIDAD VERIFICADA Y REGISTRADA");
-                } catch (err) { showToast(err.message); }
-                finally { btn.disabled = false; btn.innerHTML = "CONFIRMAR REGISTRO"; }
-            };
 
             document.getElementById('metaForm').onsubmit = (e) => {
                 e.preventDefault();
@@ -907,5 +882,70 @@ function removeMeta(i) {
         function saveSiteConfig() { siteConfig.logoUrl = document.getElementById('cfg_logo_url').value.trim() || siteConfig.logoUrl; localStorage.setItem('dae_cfg_v10', JSON.stringify(siteConfig)); location.reload(); }
         function resetData() { if(confirm("¿PURGAR SISTEMA?")) { localStorage.clear(); location.reload(); } }
     </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // Configuración real extraída de tu captura
+  const firebaseConfig = {
+    apiKey: "AIzaSyAsS-L8m_Ym1W8u6X6N8N8N8N8N8N8N8N8", 
+    authDomain: "dae-database.firebaseapp.com",
+    projectId: "dae-database",
+    storageBucket: "dae-database.appspot.com",
+    messagingSenderId: "367375151593",
+    appId: "1:367375151593:web:0681c62049ba96b6103133"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Función de registro conectada a Firebase
+  document.getElementById('regForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      
+      const clanData = {
+          name: document.getElementById('clanName').value.toUpperCase(),
+          phone: document.getElementById('clanPhone').value,
+          payRef: document.getElementById('payRef').value.toUpperCase() || "PENDIENTE",
+          p1: document.getElementById('p1_id').value,
+          p2: document.getElementById('p2_id').value,
+          p3: document.getElementById('p3_id').value,
+          fecha: new Date().getTime()
+      };
+
+      try {
+          btn.disabled = true;
+          btn.innerHTML = "REGISTRANDO EN NUBE...";
+          await addDoc(collection(db, "clanes"), clanData);
+          showToast("¡REGISTRO EXITOSO!");
+          e.target.reset();
+      } catch (error) {
+          console.error(error);
+          showToast("ERROR AL GUARDAR");
+      } finally {
+          btn.disabled = false;
+          btn.innerHTML = "CONFIRMAR REGISTRO";
+      }
+  };
+
+  // Mostrar clanes en tiempo real
+  const q = query(collection(db, "clanes"), orderBy("fecha", "desc"));
+  onSnapshot(q, (snapshot) => {
+      const container = document.getElementById('registeredClans');
+      if (!container) return;
+      let html = '';
+      snapshot.forEach((doc) => {
+          const c = doc.data();
+          html += `
+            <div class="glass-panel p-4 border-l-2 border-orange-500 bg-black/80 mb-2">
+                <h4 class="font-orbitron font-black text-orange-500 text-[10px] mb-1 uppercase italic">${c.name}</h4>
+                <div class="text-[9px] text-gray-400">CAPITÁN: ${c.p1}</div>
+            </div>`;
+      });
+      container.innerHTML = html || "<p class='text-center opacity-20 italic text-[10px]'>SIN UNIDADES</p>";
+      document.getElementById('clanCounter').innerText = snapshot.size;
+  });
+</script>
 </body>
 </html>
