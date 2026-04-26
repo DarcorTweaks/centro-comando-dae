@@ -902,19 +902,30 @@ function removeMeta(i) {
       finally { btn.disabled = false; btn.innerHTML = "CONFIRMAR REGISTRO"; }
   };
 
-  // --- ESCUCHA TIEMPO REAL ---
+ // --- ESCUCHA TIEMPO REAL (CLANES, ADMIN Y SELECTOR) ---
   onSnapshot(query(collection(db, "clanes"), orderBy("fecha", "desc")), (snapshot) => {
       const container = document.getElementById('registeredClans');
       const adminTable = document.getElementById('adm_finance_table');
-      let html = ''; let adminHtml = '';
+      const metaSelector = document.getElementById('metaClanSelector'); // El selector de la armería
+      
+      let html = ''; 
+      let adminHtml = '';
+      let selectorHtml = '<option value="">-- SELECCIONAR CLAN --</option>';
       
       snapshot.forEach((docSnap) => {
           const c = docSnap.data();
           const id = docSnap.id;
+
+          // 1. Agregamos el clan al selector de la Armería automáticamente
+          selectorHtml += `<option value="${c.name}">${c.name}</option>`;
+
+          // 2. Agregamos a la lista visual de la página principal
           html += `<div class="glass-panel p-4 border-l-2 ${c.checkedIn ? 'border-green-500':'border-orange-500'} bg-black/80 mb-2">
                     <h4 class="font-orbitron font-black text-orange-500 text-[10px] mb-1 uppercase italic">${c.name}</h4>
                     <div class="text-[9px] text-zinc-400 italic">CAP: ${c.p1}</div>
                    </div>`;
+
+          // 3. Agregamos a la tabla de finanzas del Admin
           adminHtml += `<tr class="border-b border-white/5">
                 <td class="font-bold py-2 text-white italic text-[10px] uppercase">${c.name}</td>
                 <td class="text-blue-400 text-[10px] font-black">${c.payRef}</td>
@@ -922,23 +933,14 @@ function removeMeta(i) {
                 <td class="text-right"><button onclick="window.toggleCheckInFirebase('${id}', ${c.checkedIn})" class="bg-zinc-800 text-[8px] px-2 py-1 rounded font-black hover:bg-blue-600">CHECK</button></td>
             </tr>`;
       });
+
+      // Inyectamos todo en el HTML
       if(container) container.innerHTML = html || "<p class='text-center opacity-20 text-[10px] italic'>ESPERANDO SEÑAL...</p>";
       if(adminTable) adminTable.innerHTML = adminHtml;
+      if(metaSelector) metaSelector.innerHTML = selectorHtml; // <--- AQUÍ ESTÁ LA MAGIA
+      
       document.getElementById('clanCounter').innerText = snapshot.size;
   });
-
-  // --- GESTIÓN DE STAFF ---
-  window.addStaff = async () => {
-      const user = document.getElementById('new_staff_user').value.trim();
-      const pin = document.getElementById('new_staff_pin').value.trim();
-      if(!user || !pin) return showToast("LLENA LOS CAMPOS");
-      try {
-          await addDoc(collection(db, "staff"), { user, pin, fecha: new Date().getTime() });
-          showToast("ADMIN REGISTRADO");
-          document.getElementById('new_staff_user').value = "";
-          document.getElementById('new_staff_pin').value = "";
-      } catch(e) { showToast("ERROR AL REGISTRAR"); }
-  };
 
   onSnapshot(collection(db, "staff"), (snapshot) => {
       const list = document.getElementById('staffList');
