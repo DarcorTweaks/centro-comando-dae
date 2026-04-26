@@ -829,15 +829,18 @@ function removeMeta(i) {
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
- const firebaseConfig = {
-    apiKey: "AIzaSy...", // Busca tu API KEY real en la configuración del proyecto
-    authDomain: "liga-dae.firebaseapp.com", // Probablemente sea así
-    projectId: "liga-dae", // <--- ESTO ES LO QUE TIENES QUE CAMBIAR
+  // DATOS REALES DE TU CONSOLA (LIGA DAE)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJYpz-0rTh_53p_eaTq2f1HojGssXEMg8",
+    authDomain: "liga-dae.firebaseapp.com",
+    projectId: "liga-dae",
     storageBucket: "liga-dae.appspot.com",
-    messagingSenderId: "367375151593",
-    appId: "1:367375151593:web:..."
+    messagingSenderId: "233100115005",
+    appId: "1:233100115005:web:ffb44a98059955c70b3e54",
+    measurementId: "G-5Z6S37WEF3"
   };
 
+  // INICIALIZACIÓN (ESTO ES LO QUE TE FALTABA)
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
@@ -848,13 +851,11 @@ function removeMeta(i) {
       
       if(!user || !pin) return showToast("INGRESA TUS CREDENCIALES");
 
-      // 1. Check Maestro (Darcor)
       if(user.toLowerCase() === "darcor" && pin === "2210") {
           accesoConcedido(user);
           return;
       }
 
-      // 2. Check en Firebase (Staff registrado)
       showToast("VERIFICANDO EN NUBE...");
       try {
           const q = query(collection(db, "staff"), where("user", "==", user), where("pin", "==", pin));
@@ -874,7 +875,6 @@ function removeMeta(i) {
       document.getElementById('adminAuth').classList.add('hidden');
       document.getElementById('adminDashboard').classList.remove('hidden');
       showToast(`BIENVENIDO OPERADOR ${user.toUpperCase()}`);
-      // Ejecutar renders de admin
   }
 
   // --- REGISTRO DE CLANES ---
@@ -902,7 +902,7 @@ function removeMeta(i) {
       finally { btn.disabled = false; btn.innerHTML = "CONFIRMAR REGISTRO"; }
   };
 
-  // --- ESCUCHA TIEMPO REAL (CLANES Y ADMIN) ---
+  // --- ESCUCHA TIEMPO REAL ---
   onSnapshot(query(collection(db, "clanes"), orderBy("fecha", "desc")), (snapshot) => {
       const container = document.getElementById('registeredClans');
       const adminTable = document.getElementById('adm_finance_table');
@@ -913,7 +913,7 @@ function removeMeta(i) {
           const id = docSnap.id;
           html += `<div class="glass-panel p-4 border-l-2 ${c.checkedIn ? 'border-green-500':'border-orange-500'} bg-black/80 mb-2">
                     <h4 class="font-orbitron font-black text-orange-500 text-[10px] mb-1 uppercase italic">${c.name}</h4>
-                    <div class="text-[9px] text-gray-400 italic">CAP: ${c.p1}</div>
+                    <div class="text-[9px] text-zinc-400 italic">CAP: ${c.p1}</div>
                    </div>`;
           adminHtml += `<tr class="border-b border-white/5">
                 <td class="font-bold py-2 text-white italic text-[10px] uppercase">${c.name}</td>
@@ -929,15 +929,15 @@ function removeMeta(i) {
 
   // --- GESTIÓN DE STAFF ---
   window.addStaff = async () => {
-      const user = document.getElementById('new_staff_user').value;
-      const pin = document.getElementById('new_staff_pin').value;
+      const user = document.getElementById('new_staff_user').value.trim();
+      const pin = document.getElementById('new_staff_pin').value.trim();
       if(!user || !pin) return showToast("LLENA LOS CAMPOS");
       try {
           await addDoc(collection(db, "staff"), { user, pin, fecha: new Date().getTime() });
           showToast("ADMIN REGISTRADO");
           document.getElementById('new_staff_user').value = "";
           document.getElementById('new_staff_pin').value = "";
-      } catch(e) { showToast("ERROR"); }
+      } catch(e) { showToast("ERROR AL REGISTRAR"); }
   };
 
   onSnapshot(collection(db, "staff"), (snapshot) => {
@@ -961,6 +961,5 @@ function removeMeta(i) {
   window.deleteDocFirebase = async (col, id) => {
       if(confirm("¿ELIMINAR ESTE REGISTRO?")) await deleteDoc(doc(db, col, id));
   };
-</script>
-</body>
+</script></body>
 </html>
