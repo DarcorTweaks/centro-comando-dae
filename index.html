@@ -606,84 +606,23 @@
         function closeModal() { document.getElementById('poolModal').style.display = 'none'; }
         
         function switchTab(id) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById(`tab-${id}`).classList.remove('hidden');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
-            document.getElementById(`btn-${id}`).classList.add('nav-active');
-            if(id==='clasificacion') renderRanking();
-            if(id==='meta') renderArsenal();
-            if(id==='armeria') updateClanSelectors();
-            if(id==='admin') renderAdminDashboard();
-        }
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+    document.getElementById(`tab-${id}`).classList.remove('hidden');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+    document.getElementById(`btn-${id}`).classList.add('nav-active');
+    
+    // Solo dejamos lo que sí existe
+    if(id==='clasificacion') renderRanking();
+    if(id==='meta') renderArsenal();
+    if(id==='armeria') updateClanSelectors();
+}
 
         const consultarActivision = async (id) => {
             const regex = /^.+#\d+$/;
             if (!regex.test(id)) throw new Error(`ID INVÁLIDO: ${id}`);
             await new Promise(r => setTimeout(r, 1000));
             return { id: id.toUpperCase(), kd: (Math.random() * (2.8 - 0.7) + 0.7).toFixed(2) };
-        };
-
-        // --- ADMIN DASHBOARD (CORREGIDO Y SEGURO) ---
-        function renderAdminDashboard() {
-            const finance = document.getElementById('adm_finance_table');
-            if(finance) finance.innerHTML = clans.map((c, i) => `
-                <tr class="border-b border-white/5">
-                    <td class="font-bold py-2 italic uppercase text-white">${c.name}</td>
-                    <td class="text-blue-400 font-black">${c.payRef || 'S/D'}</td>
-                    <td class="${c.checkedIn ? 'text-green-500' : 'text-red-500'} font-black italic">${c.checkedIn ? 'CONFIRMADO' : 'PENDIENTE'}</td>
-                    <td class="text-right"><button onclick="toggleCheckIn(${i})" class="bg-zinc-800 text-[8px] px-2 py-1 rounded font-black uppercase hover:bg-blue-600 transition">CHECK</button></td>
-                </tr>`).join('');
-            
-            const clansTable = document.getElementById('adm_clans_table');
-            if(clansTable) clansTable.innerHTML = clans.map((c, i) => `<tr><td class="font-bold text-orange-500 uppercase italic text-[10px]">${c.name}</td><td class="text-[10px] text-zinc-400">${c.phone}</td><td><button onclick="removeClan(${i})" class="btn-action-del">X</button></td></tr>`).join('');
-            
-            // --- NUEVA LÓGICA PARA ELIMINAR ARMAS DEL ARSENAL ---
-            const metasTable = document.getElementById('adm_metas_table');
-            if(metasTable) {
-                metasTable.innerHTML = globalMetas.map((m, i) => `
-                    <tr class="border-b border-white/5">
-                        <td class="font-bold text-white uppercase italic text-[10px] py-2">${m.name} <span class="text-[8px] text-zinc-500">(${m.mode})</span></td>
-                        <td class="text-[9px] text-zinc-400 uppercase italic">${m.author}</td>
-                        <td class="text-right">
-                            <button onclick="removeMeta(${i})" class="btn-action-del">ELIMINAR</button>
-                        </td>
-                    </tr>
-                `).join('') || "<tr><td colspan='3' class='text-center py-4 opacity-30 italic'>ARSENAL VACÍO</td></tr>";
-            }
-            
-            updateClanSelectors();
-        }
-
-        function updateFinanceTable() {
-            const table = document.getElementById('adm_finance_table');
-            if(!table) return;
-            table.innerHTML = clans.map((c, i) => `
-                <tr class="border-b border-white/5">
-                    <td class="font-bold text-white italic py-2">${c.name}</td>
-                    <td class="text-blue-400 font-black">${c.payRef || 'PENDIENTE'}</td>
-                    <td class="${c.checkedIn ? 'text-green-500' : 'text-red-500'} font-black italic">${c.checkedIn ? 'CONFIRMADO' : 'PENDIENTE'}</td>
-                    <td class="text-right py-2"><button onclick="toggleCheckIn(${i})" class="bg-zinc-800 text-[8px] px-2 py-1 rounded font-black hover:bg-blue-600 transition">${c.checkedIn ? 'REVERTIR' : 'CHECK-IN'}</button></td>
-                </tr>`).join('') || "<tr><td colspan='4' class='text-center py-4 opacity-20'>SIN SEÑAL</td></tr>";
-        }
-
-        function toggleCheckIn(i) {
-            clans[i].checkedIn = !clans[i].checkedIn;
-            localStorage.setItem('dae_clans_v10', JSON.stringify(clans));
-            renderAdminDashboard();
-            renderClans();
-        }
-
-        function loginAdmin() {
-            const user = document.getElementById('adminUser').value;
-            const pin = document.getElementById('adminPin').value;
-            const found = siteConfig.admins.find(a => a.user.toLowerCase() === user.toLowerCase() && a.pin === pin);
-            if(found) {
-                document.getElementById('adminAuth').classList.add('hidden');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                renderAdminDashboard();
-                showToast(`BIENVENIDO COMANDANTE ${user.toUpperCase()}`);
-            } else { showToast("DENEGADO: PIN ERRÓNEO"); }
-        }
+        };        
 
         // --- ARMERÍA Y SELECCIÓN ---
         function openPool(type) {
@@ -868,17 +807,21 @@
             };
         };
 
-        // --- HELPER FUNCTIONS ---
-        function removeClan(i) { clans.splice(i,1); localStorage.setItem('dae_clans_v10', JSON.stringify(clans)); renderAdminDashboard(); renderClans(); }
+  // --- HELPER FUNCTIONS (LIMPIAS) ---
+function removeClan(i) { 
+    clans.splice(i, 1); 
+    localStorage.setItem('dae_clans_v10', JSON.stringify(clans)); 
+    renderClans(); 
+}
+
 function removeMeta(i) {
-            if(confirm("¿ELIMINAR ESTA CLASE DEL ARSENAL?")) {
-                globalMetas.splice(i, 1);
-                localStorage.setItem('dae_gm_v10', JSON.stringify(globalMetas));
-                renderAdminDashboard(); // Refresca la tabla admin
-                renderArsenal();        // Refresca la pestaña Arsenal
-                showToast("ARMA ELIMINADA DEL ARSENAL");
-            }
-        }
+    if(confirm("¿ELIMINAR ESTA CLASE DEL ARSENAL?")) {
+        globalMetas.splice(i, 1);
+        localStorage.setItem('dae_gm_v10', JSON.stringify(globalMetas));
+        renderArsenal();
+        showToast("ARMA ELIMINADA DEL ARSENAL");
+    }
+}
         function saveSiteConfig() { siteConfig.logoUrl = document.getElementById('cfg_logo_url').value.trim() || siteConfig.logoUrl; localStorage.setItem('dae_cfg_v10', JSON.stringify(siteConfig)); location.reload(); }
         function resetData() { if(confirm("¿PURGAR SISTEMA?")) { localStorage.clear(); location.reload(); } }
     </script>
