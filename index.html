@@ -674,14 +674,6 @@
             document.getElementById('clanCounter').innerText = clans.length;
         }
 
-        function updateClanSelectors() {
-            const ids = ['metaClanSelector', 'score_clan_sel', 'stat_clan_sel'];
-            ids.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.innerHTML = (id === 'metaClanSelector' ? '<option value="">-- SELECCIONAR CLAN --</option>' : '') + clans.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
-            });
-        }
-
         // --- SISTEMA DE SYNC ---
         function syncMetaIntel(isSilent = false) {
     if(!isSilent) showToast("SINCRONIZANDO DATA DE COMPETICIÓN...");
