@@ -829,13 +829,13 @@ function removeMeta(i) {
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAsS-L8m_Ym1W8u6X6N8N8N8N8N8N8N8N8", 
-    authDomain: "dae-database.firebaseapp.com",
-    projectId: "dae-database",
-    storageBucket: "dae-database.appspot.com",
+ const firebaseConfig = {
+    apiKey: "AIzaSy...", // Busca tu API KEY real en la configuración del proyecto
+    authDomain: "liga-dae.firebaseapp.com", // Probablemente sea así
+    projectId: "liga-dae", // <--- ESTO ES LO QUE TIENES QUE CAMBIAR
+    storageBucket: "liga-dae.appspot.com",
     messagingSenderId: "367375151593",
-    appId: "1:367375151593:web:0681c62049ba96b6103133"
+    appId: "1:367375151593:web:..."
   };
 
   const app = initializeApp(firebaseConfig);
