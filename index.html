@@ -175,6 +175,102 @@
             cursor: pointer; transition: 0.3s; text-align: center;
         }
         .pool-item:hover { border-color: var(--dae-orange); background: #151515; }
+
+/* DISEÑO DE TARJETA META AVANZADA */
+.meta-card-tactical {
+    background: linear-gradient(145deg, #0a0a0a 0%, #151515 100%);
+    border: 1px solid rgba(255, 136, 0, 0.2);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.meta-card-tactical::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--dae-orange), transparent);
+    transition: 0.5s;
+}
+
+.meta-card-tactical:hover::before {
+    left: 100%;
+}
+
+.meta-card-tactical:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--dae-orange);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255, 136, 0, 0.1);
+}
+
+.attachment-badge {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 2px solid var(--dae-orange);
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+}
+
+.tier-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    padding: 10px 5px;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: rgba(255, 136, 0, 0.1);
+    color: var(--dae-orange);
+    border-left: 1px solid rgba(255, 136, 0, 0.2);
+}
+
+/* --- DISEÑO DE TARJETA TÁCTICA PARA ARSENAL --- */
+.meta-card-tactical {
+    background: linear-gradient(145deg, #0a0a0a 0%, #151515 100%);
+    border: 1px solid rgba(255, 136, 0, 0.2);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 20px;
+}
+
+.meta-card-tactical:hover {
+    transform: translateY(-8px);
+    border-color: #ff8800;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 15px rgba(255, 136, 0, 0.1);
+}
+
+.attachment-badge {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 2px solid #ff8800;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+}
+
+.tier-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    padding: 10px 5px;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: rgba(255, 136, 0, 0.1);
+    color: #ff8800;
+    border-left: 1px solid rgba(255, 136, 0, 0.2);
+}
     </style>
 </head>
 <body>
@@ -690,44 +786,74 @@
         }
 
         // --- SISTEMA DE SYNC ---
-        function syncMetaIntel(isSilent = false) {
-            if(!isSilent) showToast("SINCRONIZANDO CON COD COMMUNITY v2...");
-            const comm = [
-                { name: "MK35 ISR", cat: "Fusiles de Asalto", mode: "Resurgimiento", metaStatus: "Absolute Meta", author: "COD COMMUNITY v2", pick: "25.1%", attachments: { muzzle: "Supresor Sónico", barrel: "Pro Largo", optic: "Corio 2.5x", stock: "Combate", mag: "60 Balas", under: "Bruen Support" } },
-                { name: "RAZOR 9MM", cat: "Subfusiles", mode: "Resurgimiento", metaStatus: "Absolute Meta", author: "COD COMMUNITY v2", pick: "15.3%", attachments: { muzzle: "Compensador", barrel: "Pro", optic: "MORS Dot", stock: "Sin Culata", mag: "45 Balas", under: "Handstop" } }
-            ];
-            comm.forEach(item => {
-                const idx = globalMetas.findIndex(gm => gm.name === item.name && gm.mode === item.mode);
-                if(idx >= 0) globalMetas[idx] = item; else globalMetas.unshift(item);
-            });
-            localStorage.setItem('dae_gm_v10', JSON.stringify(globalMetas));
-            renderArsenal();
-        }
+       function syncMetaIntel(isSilent = false) {
+    if(!isSilent) showToast("SINCRONIZANDO ARSENAL DE COMBATE...");
+    
+    // AQUÍ ESTÁN LAS ARMAS PARA AMBOS MODOS
+    const comm = [
+        // --- ARMAS MODO RESURGIMIENTO ---
+        { name: "MK35 ISR", cat: "Fusiles de Asalto", mode: "Resurgimiento", metaStatus: "Absolute Meta", author: "DAE INTEL", pick: "25.1%", attachments: { muzzle: "Supresor Sónico", barrel: "Pro Largo", optic: "Corio 2.5x", stock: "Combate", mag: "60 Balas", under: "Bruen Support" } },
+        { name: "RAZOR 9MM", cat: "Subfusiles", mode: "Resurgimiento", metaStatus: "Absolute Meta", author: "DAE INTEL", pick: "15.3%", attachments: { muzzle: "Compensador", barrel: "Pro", optic: "MORS Dot", stock: "Sin Culata", mag: "45 Balas", under: "Handstop" } },
+        
+        // --- ARMAS MODO RANKED (ESTAS SON LAS QUE TE FALTABAN) ---
+        { name: "STG44", cat: "Fusiles de Asalto", mode: "Ranked", metaStatus: "Absolute Meta", author: "TOP 250", pick: "18.2%", attachments: { muzzle: "Quartermaster Suppressor", barrel: "Bruen Guerilla", optic: "Corio Eagleseye", stock: "Culata Pesada", mag: "50 Balas", under: "Bruen Heavy Support" } },
+        { name: "SUPERI 46", cat: "Subfusiles", mode: "Ranked", metaStatus: "Absolute Meta", author: "TOP 250", pick: "22.5%", attachments: { muzzle: "Bore-40 Muzzle", barrel: "Zulu OP3", optic: "JAK Glassless", stock: "Rescue Stock", mag: "40 Balas", under: "Xten Phantom" } },
+        { name: "KAR98K", cat: "Sniper", mode: "Ranked", metaStatus: "Meta", author: "DAE INTEL", pick: "12.4%", attachments: { muzzle: "Sonic Suppressor", barrel: "Prazisions", optic: "Range Caller", stock: "No Stock", mag: "7.62 High Velocity", under: "N/A" } }
+    ];
 
-        function renderArsenal() {
-            const cont = document.getElementById('arsenalSections');
-            if(!cont) return;
-            cont.innerHTML = "";
-            const tiers = ["Absolute Meta", "Meta", "Good", "Viable"];
-            tiers.forEach(tier => {
-                let list = globalMetas.filter(m => m.metaStatus === tier && m.mode === currentArsenalMode);
-                if(list.length > 0) {
-                    const sec = document.createElement('div');
-                    sec.innerHTML = `<h3 class="font-orbitron font-black uppercase text-orange-500 mb-6 border-l-4 border-current pl-4">Tier ${tier}</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            ${list.map(m => `
-                                <div class="meta-card-container border-t-4 border-orange-500 p-5">
-                                    <h4 class="font-orbitron font-black text-lg text-white uppercase italic">${m.name}</h4>
-                                    <span class="text-[8px] text-gray-500 uppercase block font-black">BY ${m.author}</span>
-                                    <div class="mt-4 space-y-1">
-                                        ${Object.entries(m.attachments).map(([s, n]) => n ? `<div class="bg-white/5 p-2 rounded text-[9px] uppercase font-bold italic"><b>${s}:</b> ${n}</div>` : '').join('')}
+    comm.forEach(item => {
+        const idx = globalMetas.findIndex(gm => gm.name === item.name && gm.mode === item.mode);
+        if(idx >= 0) globalMetas[idx] = item; else globalMetas.unshift(item);
+    });
+    
+    localStorage.setItem('dae_gm_v10', JSON.stringify(globalMetas));
+    renderArsenal(); // Esto hace que se dibujen en pantalla
+}
+
+       function renderArsenal() {
+    const cont = document.getElementById('arsenalSections');
+    if(!cont) return;
+    cont.innerHTML = "";
+    
+    // Filtramos las armas según el modo activo (Resurgimiento o Ranked)
+    const filteredMetas = globalMetas.filter(m => m.mode === currentArsenalMode);
+
+    const tiers = ["Absolute Meta", "Meta", "Good", "Viable"];
+
+    tiers.forEach(tier => {
+        let list = filteredMetas.filter(m => m.metaStatus === tier);
+        if(list.length > 0) {
+            const sec = document.createElement('div');
+            sec.className = "mb-12";
+            sec.innerHTML = `
+                <div class="flex items-center gap-4 mb-6">
+                    <h3 class="font-orbitron font-black uppercase text-xl italic text-orange-500">${tier}</h3>
+                    <div class="h-[1px] flex-grow bg-orange-500/20"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    ${list.map(m => `
+                        <div class="meta-card-tactical">
+                            <div class="tier-label">${tier}</div>
+                            <div class="mb-4">
+                                <span class="text-[9px] font-black text-orange-500 uppercase tracking-widest">${m.cat}</span>
+                                <h4 class="font-orbitron font-black text-2xl text-white italic leading-tight">${m.name}</h4>
+                                <span class="text-[8px] text-zinc-500 font-black">AUTOR: ${m.author}</span>
+                            </div>
+                            <div class="space-y-1 pr-4">
+                                ${Object.entries(m.attachments).map(([slot, name]) => name ? `
+                                    <div class="attachment-badge">
+                                        <span class="text-zinc-500 font-black uppercase text-[7px]">${slot}</span>
+                                        <span class="text-zinc-200 font-bold">${name}</span>
                                     </div>
-                                </div>`).join('')}
-                        </div>`;
-                    cont.appendChild(sec);
-                }
-            });
+                                ` : '').join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>`;
+            cont.appendChild(sec);
         }
+    });
+}
 
         function renderRanking() {
             const globalCont = document.getElementById('leaderboardList');
