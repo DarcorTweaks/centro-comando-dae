@@ -884,9 +884,8 @@ function removeMeta(i) {
     </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // Configuración real extraída de tu captura
   const firebaseConfig = {
     apiKey: "AIzaSyAsS-L8m_Ym1W8u6X6N8N8N8N8N8N8N8N8", 
     authDomain: "dae-database.firebaseapp.com",
@@ -899,11 +898,46 @@ function removeMeta(i) {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Función de registro conectada a Firebase
+  // --- LOGIN DE ADMIN CORREGIDO ---
+  window.loginAdmin = async () => {
+      const user = document.getElementById('adminUser').value;
+      const pin = document.getElementById('adminPin').value;
+      
+      if(!user || !pin) return showToast("INGRESA TUS CREDENCIALES");
+
+      // 1. Check Maestro (Darcor)
+      if(user.toLowerCase() === "darcor" && pin === "2210") {
+          accesoConcedido(user);
+          return;
+      }
+
+      // 2. Check en Firebase (Staff registrado)
+      showToast("VERIFICANDO EN NUBE...");
+      try {
+          const q = query(collection(db, "staff"), where("user", "==", user), where("pin", "==", pin));
+          const querySnapshot = await getDocs(q);
+          
+          if (!querySnapshot.empty) {
+              accesoConcedido(user);
+          } else {
+              showToast("ACCESO DENEGADO: DATOS INCORRECTOS");
+          }
+      } catch (e) {
+          showToast("ERROR DE CONEXIÓN");
+      }
+  };
+
+  function accesoConcedido(user) {
+      document.getElementById('adminAuth').classList.add('hidden');
+      document.getElementById('adminDashboard').classList.remove('hidden');
+      showToast(`BIENVENIDO OPERADOR ${user.toUpperCase()}`);
+      // Ejecutar renders de admin
+  }
+
+  // --- REGISTRO DE CLANES ---
   document.getElementById('regForm').onsubmit = async (e) => {
       e.preventDefault();
       const btn = e.target.querySelector('button[type="submit"]');
-      
       const clanData = {
           name: document.getElementById('clanName').value.toUpperCase(),
           phone: document.getElementById('clanPhone').value,
@@ -911,41 +945,79 @@ function removeMeta(i) {
           p1: document.getElementById('p1_id').value,
           p2: document.getElementById('p2_id').value,
           p3: document.getElementById('p3_id').value,
+          checkedIn: false,
           fecha: new Date().getTime()
       };
 
       try {
           btn.disabled = true;
-          btn.innerHTML = "REGISTRANDO EN NUBE...";
+          btn.innerHTML = "REGISTRANDO...";
           await addDoc(collection(db, "clanes"), clanData);
-          showToast("¡REGISTRO EXITOSO!");
+          showToast("¡UNIDAD REGISTRADA!");
           e.target.reset();
-      } catch (error) {
-          console.error(error);
-          showToast("ERROR AL GUARDAR");
-      } finally {
-          btn.disabled = false;
-          btn.innerHTML = "CONFIRMAR REGISTRO";
-      }
+      } catch (error) { showToast("ERROR AL GUARDAR"); }
+      finally { btn.disabled = false; btn.innerHTML = "CONFIRMAR REGISTRO"; }
   };
 
-  // Mostrar clanes en tiempo real
-  const q = query(collection(db, "clanes"), orderBy("fecha", "desc"));
-  onSnapshot(q, (snapshot) => {
+  // --- ESCUCHA TIEMPO REAL (CLANES Y ADMIN) ---
+  onSnapshot(query(collection(db, "clanes"), orderBy("fecha", "desc")), (snapshot) => {
       const container = document.getElementById('registeredClans');
-      if (!container) return;
-      let html = '';
-      snapshot.forEach((doc) => {
-          const c = doc.data();
-          html += `
-            <div class="glass-panel p-4 border-l-2 border-orange-500 bg-black/80 mb-2">
-                <h4 class="font-orbitron font-black text-orange-500 text-[10px] mb-1 uppercase italic">${c.name}</h4>
-                <div class="text-[9px] text-gray-400">CAPITÁN: ${c.p1}</div>
-            </div>`;
+      const adminTable = document.getElementById('adm_finance_table');
+      let html = ''; let adminHtml = '';
+      
+      snapshot.forEach((docSnap) => {
+          const c = docSnap.data();
+          const id = docSnap.id;
+          html += `<div class="glass-panel p-4 border-l-2 ${c.checkedIn ? 'border-green-500':'border-orange-500'} bg-black/80 mb-2">
+                    <h4 class="font-orbitron font-black text-orange-500 text-[10px] mb-1 uppercase italic">${c.name}</h4>
+                    <div class="text-[9px] text-gray-400 italic">CAP: ${c.p1}</div>
+                   </div>`;
+          adminHtml += `<tr class="border-b border-white/5">
+                <td class="font-bold py-2 text-white italic text-[10px] uppercase">${c.name}</td>
+                <td class="text-blue-400 text-[10px] font-black">${c.payRef}</td>
+                <td class="${c.checkedIn ? 'text-green-500':'text-red-500'} text-[10px] font-black italic">${c.checkedIn ? 'CONFIRMADO':'PENDIENTE'}</td>
+                <td class="text-right"><button onclick="window.toggleCheckInFirebase('${id}', ${c.checkedIn})" class="bg-zinc-800 text-[8px] px-2 py-1 rounded font-black hover:bg-blue-600">CHECK</button></td>
+            </tr>`;
       });
-      container.innerHTML = html || "<p class='text-center opacity-20 italic text-[10px]'>SIN UNIDADES</p>";
+      if(container) container.innerHTML = html || "<p class='text-center opacity-20 text-[10px] italic'>ESPERANDO SEÑAL...</p>";
+      if(adminTable) adminTable.innerHTML = adminHtml;
       document.getElementById('clanCounter').innerText = snapshot.size;
   });
+
+  // --- GESTIÓN DE STAFF ---
+  window.addStaff = async () => {
+      const user = document.getElementById('new_staff_user').value;
+      const pin = document.getElementById('new_staff_pin').value;
+      if(!user || !pin) return showToast("LLENA LOS CAMPOS");
+      try {
+          await addDoc(collection(db, "staff"), { user, pin, fecha: new Date().getTime() });
+          showToast("ADMIN REGISTRADO");
+          document.getElementById('new_staff_user').value = "";
+          document.getElementById('new_staff_pin').value = "";
+      } catch(e) { showToast("ERROR"); }
+  };
+
+  onSnapshot(collection(db, "staff"), (snapshot) => {
+      const list = document.getElementById('staffList');
+      if(!list) return;
+      let html = '';
+      snapshot.forEach(docSnap => {
+          const s = docSnap.data();
+          html += `<div class="flex justify-between bg-white/5 p-2 rounded mb-1">
+                    <span class="text-[9px] font-black uppercase text-blue-400 italic">${s.user}</span>
+                    <button onclick="window.deleteDocFirebase('staff', '${docSnap.id}')" class="text-red-500 text-[9px]"><i class="fas fa-trash"></i></button>
+                   </div>`;
+      });
+      list.innerHTML = html;
+  });
+
+  // --- FUNCIONES AUXILIARES ---
+  window.toggleCheckInFirebase = async (id, currentStatus) => {
+      await updateDoc(doc(db, "clanes", id), { checkedIn: !currentStatus });
+  };
+  window.deleteDocFirebase = async (col, id) => {
+      if(confirm("¿ELIMINAR ESTE REGISTRO?")) await deleteDoc(doc(db, col, id));
+  };
 </script>
 </body>
 </html>
