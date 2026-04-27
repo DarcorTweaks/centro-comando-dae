@@ -6,6 +6,7 @@
     <title>LIGA DAE | Tactical Command Center v10.9</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
 
@@ -228,6 +229,55 @@
     background: rgba(255, 136, 0, 0.1);
     color: var(--dae-orange);
     border-left: 1px solid rgba(255, 136, 0, 0.2);
+}
+@media (max-width: 768px) {
+
+    .modal-content { font-size: 16px; }
+
+    .pool-item { font-size: 14px !important; }
+
+    #modalTitle { font-size: 20px !important; }
+
+    #poolModal p,
+    #poolModal span,
+    #poolModal button,
+    #poolModal input,
+    #poolModal select {
+        font-size: 14px !important;
+    }
+
+    #tab-armeria input,
+    #tab-armeria select,
+    #tab-armeria button {
+        font-size: 16px !important;
+    }
+
+    #tab-armeria p {
+        font-size: 13px !important;
+    }
+
+    .attachment-slot span {
+        font-size: 12px !important;
+    }
+
+    .meta-card-tactical h4 {
+        font-size: 20px !important;
+    }
+
+    .meta-card-tactical span,
+    .meta-card-tactical div {
+        font-size: 13px !important;
+    }
+
+    .attachment-badge {
+        font-size: 12px !important;
+    }
+
+    .text-\[8px\],
+    .text-\[9px\],
+    .text-\[10px\] {
+        font-size: 13px !important;
+    }
 }
     </style>
 </head>
@@ -903,10 +953,28 @@ function removeMeta(i) {
       let html = ''; 
       let adminHtml = '';
       let selectorHtml = '<option value="">-- SELECCIONAR CLAN --</option>';
+let clanAdminHtml = '';
       
       snapshot.forEach((docSnap) => {
           const c = docSnap.data();
           const id = docSnap.id;
+clanAdminHtml += `
+<tr>
+    <td class="text-orange-500 font-black">${c.name}</td>
+    <td>
+        ${c.p1 || ""}<br>
+        ${c.p2 || ""}<br>
+        ${c.p3 || ""}<br>
+        ${c.p4 || ""}
+    </td>
+    <td>${c.phone || ""}</td>
+    <td>
+        <button onclick="editClan('${id}', '${c.name}', '${c.p1}', '${c.p2}', '${c.p3}', '${c.phone}')"
+        class="bg-blue-600 text-white px-2 py-1 text-[9px] rounded font-black">
+        EDITAR
+        </button>
+    </td>
+</tr>`;
 
           // 1. Agregamos el clan al selector de la Armería automáticamente
           selectorHtml += `<option value="${c.name}">${c.name}</option>`;
@@ -930,6 +998,8 @@ function removeMeta(i) {
       if(container) container.innerHTML = html || "<p class='text-center opacity-20 text-[10px] italic'>ESPERANDO SEÑAL...</p>";
       if(adminTable) adminTable.innerHTML = adminHtml;
       if(metaSelector) metaSelector.innerHTML = selectorHtml; // <--- AQUÍ ESTÁ LA MAGIA
+const adminClanTable = document.getElementById('adm_clans_table');
+if(adminClanTable) adminClanTable.innerHTML = clanAdminHtml;
       
       document.getElementById('clanCounter').innerText = snapshot.size;
   });
@@ -955,5 +1025,76 @@ function removeMeta(i) {
   window.deleteDocFirebase = async (col, id) => {
       if(confirm("¿ELIMINAR ESTE REGISTRO?")) await deleteDoc(doc(db, col, id));
   };
-</script></body>
+window.editClan = async (id, name, p1, p2, p3, phone) => {
+
+    let jugadores = [p1, p2, p3].filter(Boolean);
+
+    const accion = prompt(
+`EDITAR CLAN: ${name}
+
+1 = Cambiar nombre
+2 = Editar jugadores
+3 = Agregar jugador
+4 = Eliminar jugador`,
+"2"
+);
+
+    if(!accion) return;
+
+    try {
+
+        if(accion == "1"){
+            const newName = prompt("Nuevo nombre:", name);
+            if(!newName) return;
+
+            await updateDoc(doc(db, "clanes", id), {
+                name: newName.toUpperCase()
+            });
+        }
+
+        if(accion == "2"){
+            jugadores = jugadores.map((j,i)=> prompt(`Jugador ${i+1}`, j));
+
+            await updateDoc(doc(db, "clanes", id), {
+                p1: jugadores[0] || "",
+                p2: jugadores[1] || "",
+                p3: jugadores[2] || ""
+            });
+        }
+
+        if(accion == "3"){
+            const nuevo = prompt("Nuevo jugador:");
+            if(!nuevo) return;
+
+            jugadores.push(nuevo);
+
+            await updateDoc(doc(db, "clanes", id), {
+                p1: jugadores[0] || "",
+                p2: jugadores[1] || "",
+                p3: jugadores[2] || "",
+                p4: jugadores[3] || "" // opcional extra slot
+            });
+        }
+
+        if(accion == "4"){
+            const index = prompt("Número de jugador a eliminar (1-4):");
+            if(!index) return;
+
+            jugadores.splice(index-1,1);
+
+            await updateDoc(doc(db, "clanes", id), {
+                p1: jugadores[0] || "",
+                p2: jugadores[1] || "",
+                p3: jugadores[2] || "",
+                p4: jugadores[3] || ""
+            });
+        }
+
+        showToast("CLAN ACTUALIZADO");
+
+    } catch(e){
+        showToast("ERROR AL EDITAR");
+    }
+};</script>
+</body>
 </html>
