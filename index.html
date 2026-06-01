@@ -2,666 +2,510 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>LIGA DAE | Command Center v11</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>LIGA DAE | Command Center</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root{--or:#ff8800;--bl:#3b82f6;--gn:#22c55e;--rd:#ef4444;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{background:#030303;color:#fff;font-family:'Rajdhani',sans-serif;margin:0;padding:0;overflow-x:hidden;
-  background-image:radial-gradient(ellipse at 20% 80%,rgba(255,136,0,0.05) 0%,transparent 50%),
-    radial-gradient(ellipse at 80% 10%,rgba(59,130,246,0.04) 0%,transparent 50%),
-    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,136,0,0.022) 40px),
-    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,136,0,0.022) 40px);
-  background-attachment:fixed;}
-body::after{content:"";position:fixed;top:0;left:0;width:100%;height:100%;
-  background:repeating-linear-gradient(0deg,rgba(0,0,0,0.06) 0px,rgba(0,0,0,0.06) 1px,transparent 1px,transparent 4px);
-  pointer-events:none;z-index:0;}
-::-webkit-scrollbar{width:3px;height:3px;}
-::-webkit-scrollbar-thumb{background:var(--or);}
-.fo{font-family:'Orbitron',sans-serif;}
-.fm{font-family:'Share Tech Mono',monospace;}
-
-/* NAV fijo */
-#app-nav{position:fixed;top:0;left:0;right:0;z-index:200;
-  background:rgba(3,3,3,0.98);border-bottom:1px solid rgba(255,136,0,0.22);backdrop-filter:blur(20px);}
-.nav-logo{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;}
-.nav-logo img{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--or);object-fit:cover;}
-.nav-tabs{display:flex;border-top:1px solid rgba(255,255,255,0.04);}
-.ntab{flex:1;text-align:center;padding:11px 4px 9px;font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:8px;text-transform:uppercase;letter-spacing:0.3px;color:#444;
-  border-bottom:3px solid transparent;cursor:pointer;transition:.2s;background:none;border-left:none;border-right:none;border-top:none;}
-.ntab.on{color:var(--or);border-bottom-color:var(--or);background:rgba(255,136,0,0.05);}
-@media(min-width:500px){.ntab{font-size:10px;padding:12px 6px 9px;}}
-
-/* SCREENS — cada pantalla es full viewport */
-.screen{display:none;position:fixed;top:var(--nav-h,85px);left:0;right:0;bottom:0;
-  overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:10;background:#030303;
-  background-image:radial-gradient(ellipse at 20% 80%,rgba(255,136,0,0.04) 0%,transparent 50%),
-    radial-gradient(ellipse at 80% 10%,rgba(59,130,246,0.03) 0%,transparent 50%);}
-.screen.on{display:block;}
-.si{padding:14px 12px 100px;}
-@media(min-width:640px){.si{padding:20px 20px 100px;max-width:880px;margin:0 auto;}}
-
-.glass{background:rgba(10,10,10,0.88);backdrop-filter:blur(16px);
-  border:1px solid rgba(255,136,0,0.13);border-radius:16px;position:relative;z-index:1;}
-.inp{width:100%;background:rgba(0,0,0,0.6);border:1px solid rgba(255,136,0,0.2);
-  color:#fff;border-radius:10px;padding:13px 14px;font-family:'Rajdhani',sans-serif;
-  font-weight:700;font-size:16px;transition:.25s;outline:none;}
-.inp:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(255,136,0,0.1);}
+body{margin:0;padding:0;background:#030303;color:#fff;font-family:'Rajdhani',sans-serif;overflow-x:hidden;
+  background-image:radial-gradient(ellipse at 20% 80%,rgba(255,136,0,.05) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 10%,rgba(59,130,246,.04) 0%,transparent 50%),
+  repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,136,0,.02) 40px),
+  repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,136,0,.02) 40px);}
+::-webkit-scrollbar{width:3px;height:3px;}::-webkit-scrollbar-thumb{background:var(--or);}
+.fo{font-family:'Orbitron',sans-serif;} .fm{font-family:'Share Tech Mono',monospace;}
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(3,3,3,.97);
+  border-bottom:1px solid rgba(255,136,0,.2);backdrop-filter:blur(20px);}
+.nlogo{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;}
+.nlogo img{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--or);object-fit:cover;}
+.ntabs{display:flex;border-top:1px solid rgba(255,255,255,.04);}
+.nt{flex:1;text-align:center;padding:10px 4px 8px;font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:8px;text-transform:uppercase;color:#444;border:none;border-bottom:3px solid transparent;
+  background:none;cursor:pointer;transition:.2s;}
+.nt.on{color:var(--or);border-bottom-color:var(--or);background:rgba(255,136,0,.05);}
+@media(min-width:480px){.nt{font-size:10px;padding:11px 6px 9px;}}
+/* SCREENS */
+.scr{display:none;position:fixed;top:var(--nh,84px);left:0;right:0;bottom:0;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:10;background:#030303;}
+.scr.on{display:block;}
+.si{padding:14px 12px 100px;max-width:880px;margin:0 auto;}
+/* GLASS */
+.gl{background:rgba(10,10,10,.88);backdrop-filter:blur(16px);border:1px solid rgba(255,136,0,.13);border-radius:16px;}
+/* INPUT */
+.inp{width:100%;background:rgba(0,0,0,.6);border:1px solid rgba(255,136,0,.2);color:#fff;
+  border-radius:10px;padding:13px 14px;font-family:'Rajdhani',sans-serif;font-weight:700;
+  font-size:16px;outline:none;transition:.25s;}
+.inp:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(255,136,0,.1);}
 .inp::placeholder{color:#3a3a3a;}
-
 /* TOAST */
-#toast{position:fixed;top:-70px;left:50%;transform:translateX(-50%);
-  background:var(--or);color:#000;padding:10px 26px;border-radius:50px;
-  font-weight:900;z-index:9999;transition:top .4s cubic-bezier(.34,1.56,.64,1);
-  font-family:'Orbitron',sans-serif;font-size:10px;white-space:nowrap;max-width:92vw;text-align:center;}
-#toast.up{top:12px;}
-#toast.gr{background:var(--gn);color:#000;}
-#toast.rd{background:var(--rd);color:#fff;}
-
+#toast{position:fixed;top:-70px;left:50%;transform:translateX(-50%);background:var(--or);
+  color:#000;padding:10px 26px;border-radius:50px;font-weight:900;z-index:9999;
+  transition:top .4s cubic-bezier(.34,1.56,.64,1);font-family:'Orbitron',sans-serif;
+  font-size:10px;white-space:nowrap;max-width:92vw;text-align:center;}
+#toast.up{top:12px;}#toast.gr{background:var(--gn);color:#000;}#toast.rd{background:var(--rd);color:#fff;}
 /* MODAL */
-.mov{position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:3000;
-  display:none;padding:12px;backdrop-filter:blur(18px);align-items:center;justify-content:center;}
-.mbox{max-width:940px;width:100%;background:#070707;border:1px solid rgba(255,136,0,0.2);
+.mov{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:3000;display:none;
+  padding:12px;backdrop-filter:blur(18px);align-items:center;justify-content:center;}
+.mbox{max-width:940px;width:100%;background:#070707;border:1px solid rgba(255,136,0,.2);
   border-radius:20px;padding:18px;max-height:90vh;overflow-y:auto;}
-
 /* POOL ITEM */
-.pi{background:#0d0d0d;border:1px solid #1c1c1c;border-radius:9px;padding:10px;
-  cursor:pointer;transition:.2s;text-align:center;font-size:10px;font-weight:900;
-  text-transform:uppercase;font-family:'Rajdhani',sans-serif;}
-.pi:hover{border-color:var(--or);color:var(--or);background:rgba(255,136,0,0.05);}
-
+.pi{background:#0d0d0d;border:1px solid #1c1c1c;border-radius:9px;padding:10px;cursor:pointer;
+  transition:.2s;text-align:center;font-size:10px;font-weight:900;text-transform:uppercase;}
+.pi:hover{border-color:var(--or);color:var(--or);}
 /* FILTER BTN */
 .fb{padding:6px 12px;border-radius:7px;font-size:10px;font-weight:900;text-transform:uppercase;
-  color:#555;border:1px solid transparent;background:#111;transition:.2s;cursor:pointer;
-  white-space:nowrap;font-family:'Rajdhani',sans-serif;}
-.fb.on{color:#fff;border-color:var(--or);background:rgba(255,136,0,0.1);}
-
+  color:#555;border:1px solid transparent;background:#111;cursor:pointer;white-space:nowrap;}
+.fb.on{color:#fff;border-color:var(--or);background:rgba(255,136,0,.1);}
 /* ATT SLOT */
-.asl{background:#0a0a0a;border:1px solid #1c1c1c;border-radius:9px;padding:10px;
-  cursor:pointer;transition:.2s;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;min-height:64px;text-align:center;}
-.asl:hover,.asl.sel{border-color:var(--or);background:rgba(255,136,0,0.05);}
-
+.asl{background:#0a0a0a;border:1px solid #1c1c1c;border-radius:9px;padding:10px;cursor:pointer;
+  transition:.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:64px;text-align:center;}
+.asl:hover,.asl.sel{border-color:var(--or);background:rgba(255,136,0,.05);}
 /* SQUAD CARD */
-.sqc{background:linear-gradient(135deg,#0a0a0a,#111);border:1px solid rgba(255,136,0,0.16);
-  border-radius:14px;overflow:hidden;transition:.3s;position:relative;}
+.sqc{background:linear-gradient(135deg,#0a0a0a,#111);border:1px solid rgba(255,136,0,.16);
+  border-radius:14px;overflow:hidden;position:relative;}
 .sqc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--or),transparent);}
 .sqc.ok::before{background:linear-gradient(90deg,var(--gn),transparent);}
-.sqc:hover{transform:translateY(-3px);border-color:rgba(255,136,0,0.4);}
 .sqph{display:flex;justify-content:space-between;align-items:center;
-  padding:6px 12px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px;font-weight:700;}
-
+  padding:6px 12px;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;font-weight:700;}
 /* META CARD */
-.mc{background:linear-gradient(145deg,#0a0a0a,#111518);border:1px solid rgba(255,136,0,0.14);
-  border-radius:13px;position:relative;overflow:hidden;transition:.35s;}
-.mc:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(255,136,0,0.4);
-  box-shadow:0 18px 45px rgba(0,0,0,0.8);}
+.mc{background:linear-gradient(145deg,#0a0a0a,#111518);border:1px solid rgba(255,136,0,.14);
+  border-radius:13px;position:relative;overflow:hidden;transition:.3s;}
+.mc:hover{transform:translateY(-5px);border-color:rgba(255,136,0,.4);box-shadow:0 16px 40px rgba(0,0,0,.8);}
 .mc::after{content:"";position:absolute;top:0;left:-100%;width:100%;height:2px;
   background:linear-gradient(90deg,transparent,var(--or),transparent);transition:.5s;}
 .mc:hover::after{left:100%;}
 .tbar{writing-mode:vertical-rl;position:absolute;right:0;top:0;bottom:0;padding:8px 4px;
   font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:2px;
-  background:rgba(255,136,0,0.06);border-left:1px solid rgba(255,136,0,0.12);
+  background:rgba(255,136,0,.06);border-left:1px solid rgba(255,136,0,.12);
   color:var(--or);font-family:'Orbitron',sans-serif;}
-.attr{display:flex;justify-content:space-between;align-items:center;
-  background:rgba(255,255,255,0.018);border-left:2px solid var(--or);
-  padding:4px 8px;margin-bottom:2px;font-size:9px;}
-
-/* RANK CARD */
+.attr{display:flex;justify-content:space-between;background:rgba(255,255,255,.018);
+  border-left:2px solid var(--or);padding:4px 8px;margin-bottom:2px;font-size:9px;}
+/* RANK */
 .rc{background:#090909;border:1px solid #1a1a1a;border-radius:12px;padding:14px 18px;
-  display:flex;align-items:center;gap:14px;transition:.2s;}
-.rc:hover{border-color:rgba(255,136,0,0.25);}
-.rc.r1{border-color:rgba(255,136,0,0.35);background:rgba(255,136,0,0.03);}
-
+  display:flex;align-items:center;gap:14px;}
+.rc.r1{border-color:rgba(255,136,0,.35);background:rgba(255,136,0,.03);}
 /* ADMIN */
 .acol summary{list-style:none;display:flex;justify-content:space-between;align-items:center;
   padding:13px 16px;background:#0a0a0a;border:1px solid #1c1c1c;border-radius:9px;
   cursor:pointer;font-family:'Orbitron',sans-serif;font-weight:900;font-size:10px;
-  text-transform:uppercase;transition:.2s;margin-bottom:6px;}
-.acol[open] summary{border-color:var(--or);color:var(--or);background:rgba(255,136,0,0.04);}
+  text-transform:uppercase;margin-bottom:6px;}
+.acol[open] summary{border-color:var(--or);color:var(--or);background:rgba(255,136,0,.04);}
 .atd{background:#0d0d0d;padding:10px;border-top:1px solid #111;border-bottom:1px solid #111;font-size:11px;}
-
 /* MODE TAB */
 .mtab{flex:1;text-align:center;padding:13px;font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:12px;text-transform:uppercase;cursor:pointer;border-bottom:3px solid transparent;transition:.2s;color:#444;}
-.mtab.on{color:var(--or);border-bottom-color:var(--or);background:rgba(255,136,0,0.04);}
-
+  font-size:12px;text-transform:uppercase;cursor:pointer;border-bottom:3px solid transparent;
+  transition:.2s;color:#444;}
+.mtab.on{color:var(--or);border-bottom-color:var(--or);}
 /* PICK BAR */
 .pb{background:#111;border-radius:3px;height:3px;overflow:hidden;flex:1;}
 .pbf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--or),#ffaa44);transition:width 1s;}
-
-/* PING DOT */
+/* PING */
 @keyframes pk{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5);}50%{box-shadow:0 0 0 6px rgba(34,197,94,0);}}
 .ping{width:7px;height:7px;border-radius:50%;background:var(--gn);animation:pk 2s infinite;display:inline-block;}
-
-/* ANIM */
-@keyframes si{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-.ani{animation:si .35s ease forwards;}
-
-/* SEASON STRIP */
-.sstrip{background:linear-gradient(90deg,rgba(255,136,0,0.07),rgba(59,130,246,0.05),rgba(255,136,0,0.07));
-  border:1px solid rgba(255,136,0,0.14);border-radius:9px;padding:9px 14px;
-  display:flex;align-items:center;justify-content:space-between;}
-
-/* WA NOTIFICATION */
-@keyframes wani{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-.wa-notif{animation:wani .4s ease;}
+/* FB STATUS */
+#fbst{position:fixed;bottom:60px;left:12px;right:12px;z-index:2000;padding:10px 14px;
+  border-radius:10px;font-size:10px;font-weight:900;font-family:'Orbitron',sans-serif;
+  text-transform:uppercase;display:none;align-items:center;gap:8px;}
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
 <div id="toast">Sistema activo</div>
+<div id="fbst"></div>
 
-<!-- POOL MODAL -->
+<!-- ═══ MODAL POOL DE ARMAS ═══ -->
 <div id="poolModal" class="mov">
   <div class="mbox">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:14px;">
-      <div>
-        <h3 id="modalTitle" class="fo font-black text-lg uppercase" style="color:var(--or);">Arsenal</h3>
-        <p style="font-size:9px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-top:2px;">Base de datos táctica</p>
-      </div>
-      <button onclick="closeModal()" style="background:var(--rd);color:#fff;padding:8px 18px;border-radius:9px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">CERRAR</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:14px;">
+      <h3 id="modalTitle" class="fo font-black text-lg uppercase" style="color:var(--or);">Arsenal</h3>
+      <button onclick="closeModal()" style="background:var(--rd);color:#fff;padding:8px 18px;border-radius:9px;font-weight:900;font-size:11px;border:none;cursor:pointer;">CERRAR</button>
     </div>
-    <div id="modalFilters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;overflow-x:auto;"></div>
-    <div id="poolGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px;"
-      class="md:grid-cols-4 lg:grid-cols-5"></div>
-    <div style="background:rgba(255,136,0,0.04);border:2px dashed rgba(255,136,0,0.18);padding:14px;border-radius:12px;">
-      <h4 class="fo font-black" style="font-size:10px;color:var(--or);text-transform:uppercase;margin-bottom:10px;">¿Nuevo Item?</h4>
-      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;">
-        <input type="text" id="customItemName" class="inp uppercase italic" placeholder="NOMBRE DEL ITEM">
-        <select id="customItemCat" class="inp uppercase italic hidden" id="customItemExtra">
-          <option value="Fusiles de Asalto">Fusiles de Asalto</option>
-          <option value="Subfusiles">Subfusiles</option>
-          <option value="Sniper">Sniper</option>
-          <option value="LMG">LMG</option>
-          <option value="Escopetas">Escopetas</option>
-          <option value="Fusiles Tácticos">Fusiles Tácticos</option>
-          <option value="Pistolas">Pistolas</option>
-        </select>
-        <button onclick="submitCustomItem()" style="background:var(--bl);color:#fff;font-weight:900;font-size:11px;padding:0 16px;border-radius:9px;text-transform:uppercase;border:none;cursor:pointer;white-space:nowrap;">REGISTRAR</button>
+    <div id="modalFilters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;"></div>
+    <div id="poolGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;"></div>
+    <div style="background:rgba(255,136,0,.04);border:2px dashed rgba(255,136,0,.18);padding:14px;border-radius:12px;">
+      <h4 class="fo font-black" style="font-size:10px;color:var(--or);text-transform:uppercase;margin-bottom:10px;">¿Item no está en la lista? Agrégalo:</h4>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:8px;">
+        <input type="text" id="customItemName" class="inp" placeholder="NOMBRE DEL ITEM" style="text-transform:uppercase;">
+        <button onclick="submitCustomItem()" style="background:var(--bl);color:#fff;font-weight:900;font-size:11px;padding:0 18px;border-radius:9px;border:none;cursor:pointer;white-space:nowrap;">+ AGREGAR</button>
       </div>
+      <select id="customItemCat" class="inp" style="margin-top:8px;display:none;">
+        <option value="Fusiles de Asalto">Fusiles de Asalto</option>
+        <option value="Subfusiles">Subfusiles</option>
+        <option value="Sniper">Sniper</option>
+        <option value="LMG">LMG</option>
+        <option value="Escopetas">Escopetas</option>
+        <option value="Fusiles Tácticos">Fusiles Tácticos</option>
+        <option value="Pistolas">Pistolas</option>
+      </select>
     </div>
   </div>
 </div>
 
-<!-- WA MODAL -->
-<div id="waModal" class="mov">
-  <div class="mbox" style="max-width:420px;">
+<!-- ═══ MODAL NOTIFICAR EQUIPOS ═══ -->
+<div id="notifModal" class="mov">
+  <div class="mbox" style="max-width:480px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <h3 class="fo font-black text-lg uppercase" style="color:var(--gn);">⚡ Alertas WhatsApp</h3>
-      <button onclick="document.getElementById('waModal').style.display='none'" style="background:var(--rd);color:#fff;padding:7px 14px;border-radius:8px;font-weight:900;font-size:11px;border:none;cursor:pointer;">CERRAR</button>
+      <div>
+        <h3 class="fo font-black text-lg uppercase" style="color:var(--or);">📢 Notificar Equipos</h3>
+        <p style="font-size:9px;color:#555;font-weight:700;text-transform:uppercase;margin-top:2px;">Mensaje al grupo Liga DAE</p>
+      </div>
+      <button onclick="document.getElementById('notifModal').style.display='none'" style="background:var(--rd);color:#fff;padding:7px 14px;border-radius:8px;font-weight:900;font-size:11px;border:none;cursor:pointer;">CERRAR</button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div class="glass" style="padding:14px;border-radius:12px;">
-        <p style="font-size:11px;font-weight:900;text-transform:uppercase;color:var(--gn);margin-bottom:8px;">Grupo Liga DAE:</p>
-        <a href="https://chat.whatsapp.com/KKbEKeaREyAAhVgKFOGzig" target="_blank"
-          style="display:flex;align-items:center;justify-content:center;gap:8px;background:#128C7E;color:#fff;
-                 padding:12px;border-radius:10px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:11px;text-decoration:none;">
-          <i class="fab fa-whatsapp" style="font-size:18px;"></i> ABRIR GRUPO LIGA DAE
-        </a>
-        <p style="font-size:10px;color:#555;margin-top:10px;font-weight:600;">Al registrarse un clan, el mensaje se copia automáticamente. Pégalo en el grupo.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button onclick="setNotifType('torneo')" id="ntype-torneo"
+          style="padding:12px;border-radius:10px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;cursor:pointer;border:2px solid var(--or);background:rgba(255,136,0,.1);color:var(--or);">
+          🏆 TORNEO
+        </button>
+        <button onclick="setNotifType('privada')" id="ntype-privada"
+          style="padding:12px;border-radius:10px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;cursor:pointer;border:2px solid #333;background:#111;color:#555;">
+          🎮 PARTIDA PRIVADA
+        </button>
       </div>
-      <div class="glass" style="padding:14px;border-radius:12px;">
-        <p style="font-size:11px;font-weight:900;text-transform:uppercase;color:var(--or);margin-bottom:8px;">Envío Automático (CallMeBot — Gratis):</p>
-        <ol style="font-size:11px;color:#888;margin-bottom:12px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
-          <li><span style="color:var(--or);font-weight:900;">1.</span> WhatsApp a <strong style="color:#fff;">+34 644 59 99 39</strong></li>
-          <li><span style="color:var(--or);font-weight:900;">2.</span> Escribe: <code style="color:var(--gn);background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:4px;">I allow callmebot to send me messages</code></li>
-          <li><span style="color:var(--or);font-weight:900;">3.</span> Recibirás tu API KEY por WhatsApp</li>
-        </ol>
-        <input type="tel"  id="waPhone"  class="inp" style="margin-bottom:8px;" placeholder="TU NÚMERO (ej: 584121234567)">
-        <input type="text" id="waApiKey" class="inp" style="margin-bottom:8px;" placeholder="TU API KEY DE CALLMEBOT">
-        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:12px;">
-          <input type="checkbox" id="waEnabled" style="width:18px;height:18px;accent-color:var(--or);">
-          <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:#ccc;">Activar envío automático</span>
-        </label>
-        <button onclick="saveWaConfig()" style="width:100%;padding:12px;background:var(--gn);color:#000;font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;border-radius:10px;text-transform:uppercase;border:none;cursor:pointer;margin-bottom:6px;">GUARDAR</button>
-        <button onclick="testWaAlert()" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-weight:900;font-size:11px;border-radius:10px;text-transform:uppercase;cursor:pointer;">ENVIAR PRUEBA</button>
+      <input type="text" id="notif_titulo"  class="inp" placeholder="TÍTULO (ej: TORNEO SABATINO #5)" oninput="updateNotifPreview()">
+      <input type="text" id="notif_fecha"   class="inp" placeholder="FECHA Y HORA (ej: Sábado 7pm)" oninput="updateNotifPreview()">
+      <input type="text" id="notif_premio"  class="inp" placeholder="PREMIO (ej: $20 USDT)" oninput="updateNotifPreview()">
+      <input type="text" id="notif_detalle" class="inp" placeholder="DETALLE EXTRA (opcional)" oninput="updateNotifPreview()">
+      <div style="background:#000;border:1px solid rgba(255,136,0,.2);border-radius:10px;padding:14px;">
+        <p style="font-size:9px;color:#555;font-weight:900;text-transform:uppercase;margin-bottom:8px;">PREVIEW:</p>
+        <div id="notifPreview" style="font-size:12px;color:#ccc;line-height:1.7;white-space:pre-line;font-family:'Share Tech Mono',monospace;"></div>
       </div>
+      <button onclick="enviarNotifGrupo()"
+        style="width:100%;padding:16px;background:#128C7E;color:#fff;border:none;border-radius:12px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:13px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;"
+        onmouseover="this.style.background='#075E54'" onmouseout="this.style.background='#128C7E'">
+        <i class="fab fa-whatsapp" style="font-size:20px;"></i> ABRIR GRUPO Y ENVIAR
+      </button>
+      <p style="font-size:10px;color:#555;text-align:center;font-weight:700;">Abre WhatsApp con el mensaje listo. Solo pega y envía.</p>
     </div>
   </div>
 </div>
 
-<!-- NAV FIJO -->
-<div id="app-nav">
-  <div class="nav-logo">
+<!-- ═══ NAV ═══ -->
+<div id="nav">
+  <div class="nlogo">
     <div style="display:flex;align-items:center;gap:10px;">
-      <img id="navLogo" src="https://i.imgur.com/Bq8k5S5.png" class="site-logo" alt="logo">
+      <img id="sitelogo" src="https://i.imgur.com/Bq8k5S5.png" alt="logo">
       <div>
-        <div class="fo font-black text-base leading-none" style="color:#fff;">LIGA <span style="color:var(--or);">DAE</span></div>
-        <div style="font-size:7px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,136,0,0.55);">Command Center v11</div>
+        <div class="fo font-black text-base leading-none">LIGA <span style="color:var(--or);">DAE</span></div>
+        <div style="font-size:7px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,136,0,.5);">Command Center</div>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
-      <div style="display:flex;align-items:center;gap:5px;">
-        <div class="ping"></div>
-        <span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#444;" class="hidden sm:block">Online</span>
-      </div>
-      <div style="background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.25);padding:4px 12px;
-                  border-radius:20px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:10px;color:var(--or);">
+      <div style="display:flex;align-items:center;gap:5px;"><div class="ping"></div></div>
+      <div style="background:rgba(255,136,0,.1);border:1px solid rgba(255,136,0,.25);padding:4px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:10px;color:var(--or);">
         <i class="fas fa-users" style="font-size:8px;margin-right:4px;"></i><span id="clanCounter">0</span>
       </div>
     </div>
   </div>
-  <div class="nav-tabs">
-    <button class="ntab on" id="nt-clanes"  onclick="goTo('clanes')">
-      <i class="fas fa-users"    style="display:block;font-size:12px;margin-bottom:2px;"></i>Clanes</button>
-    <button class="ntab" id="nt-ranking"    onclick="goTo('ranking')">
-      <i class="fas fa-trophy"   style="display:block;font-size:12px;margin-bottom:2px;"></i>Ranking</button>
-    <button class="ntab" id="nt-armeria"    onclick="goTo('armeria')">
-      <i class="fas fa-crosshairs" style="display:block;font-size:12px;margin-bottom:2px;"></i>Armería</button>
-    <button class="ntab" id="nt-meta"       onclick="goTo('meta')">
-      <i class="fas fa-star"     style="display:block;font-size:12px;margin-bottom:2px;"></i>Meta</button>
-    <button class="ntab" id="nt-admin"      onclick="goTo('admin')">
-      <i class="fas fa-cog"      style="display:block;font-size:12px;margin-bottom:2px;"></i>Admin</button>
+  <div class="ntabs">
+    <button class="nt on" id="nt-clanes"  onclick="goTo('clanes')"><i class="fas fa-users"     style="display:block;font-size:12px;margin-bottom:2px;"></i>Clanes</button>
+    <button class="nt"    id="nt-ranking" onclick="goTo('ranking')"><i class="fas fa-trophy"   style="display:block;font-size:12px;margin-bottom:2px;"></i>Ranking</button>
+    <button class="nt"    id="nt-armeria" onclick="goTo('armeria')"><i class="fas fa-crosshairs" style="display:block;font-size:12px;margin-bottom:2px;"></i>Armería</button>
+    <button class="nt"    id="nt-meta"    onclick="goTo('meta')"><i class="fas fa-star"         style="display:block;font-size:12px;margin-bottom:2px;"></i>Meta</button>
+    <button class="nt"    id="nt-admin"   onclick="goTo('admin')"><i class="fas fa-cog"         style="display:block;font-size:12px;margin-bottom:2px;"></i>Admin</button>
   </div>
 </div>
 
-<!-- ═══════════ SCREEN: CLANES ═══════════ -->
-<div class="screen on" id="sc-clanes">
-  <div class="si" style="display:flex;flex-direction:column;gap:14px;">
-
-    <!-- Strip torneo -->
-    <div class="sstrip">
-      <div>
-        <div id="torneyName" class="fo font-black" style="font-size:11px;color:#fff;">TORNEO ACTIVO</div>
-        <div id="torneyPrize" style="font-size:9px;color:var(--or);font-weight:900;">Cargando...</div>
-      </div>
-      <div style="display:flex;gap:8px;">
-        <button onclick="document.getElementById('waModal').style.display='flex'"
-          style="background:rgba(18,140,126,0.18);border:1px solid rgba(18,140,126,0.35);color:#25D366;
-                 padding:7px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;
-                 font-size:9px;cursor:pointer;display:flex;align-items:center;gap:5px;border-top:none;">
-          <i class="fab fa-whatsapp"></i> WA
-        </button>
-        <button onclick="syncMetaIntel()"
-          style="background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.25);color:var(--or);
-                 padding:7px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;
-                 font-size:9px;cursor:pointer;display:flex;align-items:center;gap:5px;border-top:none;">
-          <i class="fas fa-sync-alt"></i> SYNC
-        </button>
-      </div>
-    </div>
-
-    <!-- Form registro -->
-    <div class="glass" style="padding:18px;border-top:3px solid var(--or);">
-      <h2 class="fo font-black text-lg uppercase italic" style="margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:10px;">Alistamiento de Escuadra</h2>
-      <form id="regForm" style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" class="sm:grid-cols-2">
-          <input type="text" id="clanName"  required class="inp font-black uppercase italic" placeholder="NOMBRE DEL CLAN" style="grid-column:1">
-          <input type="tel"  id="clanPhone" required class="inp font-black" placeholder="WHATSAPP (código país)" style="grid-column:2">
-        </div>
-        <input type="text" id="payRef" class="inp font-black uppercase italic" placeholder="REF. PAGO (PAGO MÓVIL / ZELLE / BINANCE)">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-          <input type="text" id="p1_id" required class="inp text-sm uppercase italic font-bold" placeholder="👑 CAPITÁN">
-          <input type="text" id="p2_id" required class="inp text-sm uppercase italic font-bold" placeholder="⚔️ OP 2">
-          <input type="text" id="p3_id" required class="inp text-sm uppercase italic font-bold" placeholder="⚔️ OP 3">
-        </div>
-        <button type="submit" class="fo font-black text-lg uppercase italic"
-          style="width:100%;padding:16px;background:var(--or);color:#000;border-radius:12px;border:none;cursor:pointer;transition:.2s;box-shadow:0 4px 20px rgba(255,136,0,0.2);"
-          onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--or)'">
-          CONFIRMAR REGISTRO
-        </button>
-      </form>
-    </div>
-
-    <!-- Grid clanes -->
-    <div class="glass" style="padding:14px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <h3 class="fo font-black" style="font-size:10px;color:var(--or);text-transform:uppercase;letter-spacing:.15em;">Escuadras Operativas</h3>
-        <span style="font-size:8px;font-weight:900;color:#444;text-transform:uppercase;">
-          <span style="color:var(--gn);">■</span> CHECK-IN &nbsp;<span style="color:var(--or);">■</span> PENDIENTE
-        </span>
-      </div>
-      <div id="clanGrid" style="display:grid;grid-template-columns:1fr;gap:10px;" class="sm:grid-cols-2 md:grid-cols-3">
-        <div style="grid-column:1/-1;text-align:center;padding:40px;opacity:.2;">
-          <i class="fas fa-satellite-dish" style="font-size:2rem;display:block;margin-bottom:8px;"></i>
-          <p class="fo font-black" style="font-size:11px;text-transform:uppercase;">Buscando señales...</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════ SCREEN: RANKING ═══════════ -->
-<div class="screen" id="sc-ranking">
-  <div class="si" style="display:flex;flex-direction:column;gap:24px;">
-
+<!-- ═══ SCREEN: CLANES ═══ -->
+<div class="scr on" id="sc-clanes">
+ <div class="si" style="display:flex;flex-direction:column;gap:14px;">
+  <!-- Banner torneo -->
+  <div style="background:linear-gradient(90deg,rgba(255,136,0,.07),rgba(59,130,246,.05),rgba(255,136,0,.07));border:1px solid rgba(255,136,0,.14);border-radius:9px;padding:9px 14px;display:flex;align-items:center;justify-content:space-between;">
     <div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:4px;height:30px;background:var(--bl);border-radius:2px;"></div>
-          <h2 class="fo font-black text-xl uppercase italic" style="color:var(--bl);">TOP <span style="color:#fff;">MAX POINT</span></h2>
-        </div>
-        <button onclick="shareTournamentResults()"
-          style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);color:var(--bl);
-                 padding:7px 14px;border-radius:20px;font-weight:900;font-size:9px;
-                 text-transform:uppercase;cursor:pointer;font-family:'Orbitron',sans-serif;
-                 display:flex;align-items:center;gap:6px;border-top:none;">
-          <i class="fas fa-share-alt"></i> COMPARTIR
-        </button>
-      </div>
-      <div id="tournamentRanking" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <div id="torneyName" class="fo font-black" style="font-size:11px;">TORNEO ACTIVO</div>
+      <div id="torneyPrize" style="font-size:9px;color:var(--or);font-weight:900;">Liga DAE</div>
     </div>
-
-    <div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <div style="width:4px;height:30px;background:var(--or);border-radius:2px;"></div>
-        <h2 class="fo font-black text-xl uppercase italic">RANKING GLOBAL LIGA</h2>
-      </div>
-      <div id="leaderboardList" style="display:flex;flex-direction:column;gap:8px;"></div>
-    </div>
-
-    <div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <div style="width:4px;height:30px;background:var(--gn);border-radius:2px;"></div>
-        <h2 class="fo font-black text-xl uppercase italic" style="color:var(--gn);">KD PROMEDIO</h2>
-      </div>
-      <div id="kdRankingList" style="display:flex;flex-direction:column;gap:8px;"></div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="document.getElementById('notifModal').style.display='flex';setNotifType('torneo')"
+        style="background:rgba(18,140,126,.18);border:1px solid rgba(18,140,126,.35);color:#25D366;padding:7px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:9px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+        <i class="fab fa-whatsapp"></i> NOTIFICAR
+      </button>
+      <button onclick="syncMeta()"
+        style="background:rgba(255,136,0,.1);border:1px solid rgba(255,136,0,.25);color:var(--or);padding:7px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:9px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+        <i class="fas fa-sync-alt"></i> SYNC
+      </button>
     </div>
   </div>
+  <!-- Form registro -->
+  <div class="gl" style="padding:18px;border-top:3px solid var(--or);">
+    <h2 class="fo font-black text-lg uppercase italic" style="margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:10px;">Alistamiento de Escuadra</h2>
+    <form id="regForm" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <input type="text" id="clanName"  required class="inp font-black uppercase italic" placeholder="NOMBRE DEL CLAN">
+        <input type="tel"  id="clanPhone" required class="inp font-black" placeholder="WHATSAPP (con código país)">
+      </div>
+      <input type="text" id="payRef" class="inp uppercase italic" placeholder="REF. PAGO (PAGO MÓVIL / ZELLE / BINANCE)">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <input type="text" id="p1_id" required class="inp text-sm uppercase italic" placeholder="👑 CAPITÁN">
+        <input type="text" id="p2_id" required class="inp text-sm uppercase italic" placeholder="⚔️ OP 2">
+        <input type="text" id="p3_id" required class="inp text-sm uppercase italic" placeholder="⚔️ OP 3">
+      </div>
+      <button type="submit" id="regBtn" class="fo font-black text-lg uppercase italic"
+        style="width:100%;padding:16px;background:var(--or);color:#000;border-radius:12px;border:none;cursor:pointer;transition:.2s;"
+        onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--or)'">
+        CONFIRMAR REGISTRO
+      </button>
+    </form>
+  </div>
+  <!-- Grid clanes -->
+  <div class="gl" style="padding:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span class="fo font-black" style="font-size:10px;color:var(--or);text-transform:uppercase;letter-spacing:.1em;">Escuadras Registradas</span>
+      <span style="font-size:8px;font-weight:900;color:#444;text-transform:uppercase;"><span style="color:var(--gn);">■</span> CHECK-IN &nbsp;<span style="color:var(--or);">■</span> PENDIENTE</span>
+    </div>
+    <div id="clanGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;">
+      <div id="clanGridEmpty" style="grid-column:1/-1;text-align:center;padding:40px;opacity:.25;">
+        <i class="fas fa-satellite-dish" style="font-size:2rem;display:block;margin-bottom:8px;animation:spin 3s linear infinite;"></i>
+        <p class="fo font-black" style="font-size:11px;text-transform:uppercase;">Conectando...</p>
+      </div>
+    </div>
+  </div>
+ </div>
 </div>
 
-<!-- ═══════════ SCREEN: ARMERÍA ═══════════ -->
-<div class="screen" id="sc-armeria">
-  <div class="si">
-    <div class="glass" style="padding:20px;border-top:3px solid #fff;">
-      <div style="text-align:center;margin-bottom:20px;">
-        <h2 class="fo font-black text-2xl uppercase italic" style="letter-spacing:-.02em;">CREAR <span style="color:var(--or);">META</span></h2>
-        <p style="font-size:9px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-top:4px;">Configuración de equipamiento</p>
+<!-- ═══ SCREEN: RANKING ═══ -->
+<div class="scr" id="sc-ranking">
+ <div class="si" style="display:flex;flex-direction:column;gap:22px;">
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:4px;height:28px;background:var(--bl);border-radius:2px;"></div>
+        <h2 class="fo font-black text-xl uppercase italic" style="color:var(--bl);">TOP <span style="color:#fff;">MAX POINT</span></h2>
       </div>
-      <form id="metaForm" style="display:flex;flex-direction:column;gap:12px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <select id="metaClanSelector" required class="inp font-black text-sm uppercase italic">
-            <option value="">-- ESCUADRA --</option>
-          </select>
-          <select id="metaModeSelector" required class="inp font-black text-sm uppercase italic">
-            <option value="Resurgimiento">RESURGIMIENTO</option>
-            <option value="Ranked">RANKED PLAY</option>
-          </select>
-        </div>
-        <!-- Weapon big trigger -->
-        <div onclick="openPool('weapon')" id="weapTrig"
-          style="border:2px dashed #1c1c1c;padding:22px;border-radius:12px;text-align:center;cursor:pointer;
-                 background:rgba(0,0,0,0.3);transition:.25s;"
-          onmouseover="this.style.borderColor='var(--or)'" onmouseout="this.style.borderColor='#1c1c1c'">
-          <div id="selectedWeaponDisplay">
-            <i class="fas fa-crosshairs" style="font-size:2.5rem;color:#1c1c1c;display:block;margin-bottom:8px;"></i>
-            <p style="font-size:11px;font-weight:900;text-transform:uppercase;color:#3a3a3a;font-style:italic;">ELEGIR ARMA META</p>
-          </div>
-        </div>
-        <!-- Attachment slots -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;" class="md:grid-cols-6">
-          <div onclick="openPool('muzzle')" id="slot-muzzle" class="asl">
-            <span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Muzzle</span>
-            <i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>
-          </div>
-          <div onclick="openPool('barrel')" id="slot-barrel" class="asl">
-            <span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Barrel</span>
-            <i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>
-          </div>
-          <div onclick="openPool('optic')" id="slot-optic" class="asl">
-            <span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Optic</span>
-            <i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>
-          </div>
-          <div onclick="openPool('stock')" id="slot-stock" class="asl">
-            <span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Stock</span>
-            <i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>
-          </div>
-          <div onclick="openPool('mag')" id="slot-mag" class="asl">
-            <span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Mag</span>
-            <i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>
-          </div>
-          <div onclick="openPool('under')" id="slot-under" class="asl">
-            <span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Under</span>
-            <i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>
-          </div>
-        </div>
-        <button type="submit" class="fo font-black text-xl uppercase italic"
-          style="width:100%;padding:18px;background:#fff;color:#000;border-radius:12px;border:none;cursor:pointer;transition:.2s;"
-          onmouseover="this.style.background='var(--or)'" onmouseout="this.style.background='#fff'">
-          DESPLEGAR AL ARSENAL
-        </button>
-      </form>
+      <button onclick="shareTournamentResults()"
+        style="background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:var(--bl);padding:7px 14px;border-radius:20px;font-weight:900;font-size:9px;text-transform:uppercase;cursor:pointer;font-family:'Orbitron',sans-serif;display:flex;align-items:center;gap:6px;">
+        <i class="fas fa-share-alt"></i> COMPARTIR
+      </button>
     </div>
+    <div id="tournamentRanking" style="display:flex;flex-direction:column;gap:8px;"></div>
   </div>
+  <div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="width:4px;height:28px;background:var(--or);border-radius:2px;"></div>
+      <h2 class="fo font-black text-xl uppercase italic">RANKING GLOBAL</h2>
+    </div>
+    <div id="leaderboardList" style="display:flex;flex-direction:column;gap:8px;"></div>
+  </div>
+  <div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="width:4px;height:28px;background:var(--gn);border-radius:2px;"></div>
+      <h2 class="fo font-black text-xl uppercase italic" style="color:var(--gn);">KD PROMEDIO</h2>
+    </div>
+    <div id="kdRankingList" style="display:flex;flex-direction:column;gap:8px;"></div>
+  </div>
+ </div>
 </div>
 
-<!-- ═══════════ SCREEN: META ═══════════ -->
-<div class="screen" id="sc-meta">
-  <div class="si" style="display:flex;flex-direction:column;gap:12px;">
-
-    <!-- AI Panel -->
-    <div class="glass" style="padding:14px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <i class="fas fa-robot" style="color:var(--or);"></i>
-          <span class="fo font-black" style="font-size:11px;text-transform:uppercase;color:var(--or);">INTEL AUTOMÁTICO</span>
-          <span style="background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.22);color:var(--or);
-                       padding:2px 7px;border-radius:4px;font-size:8px;font-weight:900;font-family:'Orbitron',sans-serif;">
-            <i class="fas fa-brain" style="margin-right:2px;"></i>Claude AI
-          </span>
+<!-- ═══ SCREEN: ARMERÍA ═══ -->
+<div class="scr" id="sc-armeria">
+ <div class="si">
+  <div class="gl" style="padding:20px;border-top:3px solid #fff;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <h2 class="fo font-black text-2xl uppercase italic">CREAR <span style="color:var(--or);">META</span></h2>
+      <p style="font-size:9px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-top:4px;">Configura tu equipamiento de combate</p>
+    </div>
+    <form id="metaForm" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <select id="metaClanSel" required class="inp font-black text-sm uppercase italic">
+          <option value="">-- ESCUADRA --</option>
+        </select>
+        <select id="metaModeSel" required class="inp font-black text-sm uppercase italic">
+          <option value="Resurgimiento">RESURGIMIENTO</option>
+          <option value="Ranked">RANKED PLAY</option>
+        </select>
+      </div>
+      <div onclick="openPool('weapon')" style="border:2px dashed #1c1c1c;padding:22px;border-radius:12px;text-align:center;cursor:pointer;background:rgba(0,0,0,.3);transition:.25s;"
+        onmouseover="this.style.borderColor='var(--or)'" onmouseout="this.style.borderColor='#1c1c1c'">
+        <div id="weapDisplay">
+          <i class="fas fa-crosshairs" style="font-size:2.5rem;color:#1c1c1c;display:block;margin-bottom:8px;"></i>
+          <p style="font-size:11px;font-weight:900;text-transform:uppercase;color:#3a3a3a;font-style:italic;">TOCA PARA ELEGIR ARMA META</p>
         </div>
-        <button id="aiBtn" onclick="fetchAIMeta()"
-          style="background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.25);color:var(--or);
-                 padding:7px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;
-                 font-size:9px;cursor:pointer;display:flex;align-items:center;gap:5px;border-top:none;">
-          <i class="fas fa-sync-alt"></i> ACTUALIZAR META
-        </button>
       </div>
-      <div id="aiStatus" style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;">
-        Meta sincronizada · KOGOW · MK 78 · MX Guardian · KAR98K · WSP Stinger — Warzone 2025
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div onclick="openPool('muzzle')" id="sl-muzzle" class="asl"><span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Muzzle</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i></div>
+        <div onclick="openPool('barrel')" id="sl-barrel" class="asl"><span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Barrel</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i></div>
+        <div onclick="openPool('optic')"  id="sl-optic"  class="asl"><span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Optic</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i></div>
+        <div onclick="openPool('stock')"  id="sl-stock"  class="asl"><span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Stock</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i></div>
+        <div onclick="openPool('mag')"    id="sl-mag"    class="asl"><span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Mag</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i></div>
+        <div onclick="openPool('under')"  id="sl-under"  class="asl"><span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">Under</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i></div>
       </div>
-    </div>
-
-    <!-- Mode Tabs -->
-    <div class="glass" style="display:flex;border-radius:14px 14px 0 0;border-bottom:none;overflow:hidden;">
-      <div class="mtab on" id="mode-resurgimiento" onclick="setMode('Resurgimiento')">Resurgimiento</div>
-      <div class="mtab"    id="mode-ranked"        onclick="setMode('Ranked')">Ranked Play</div>
-    </div>
-
-    <!-- Category filters -->
-    <div id="arsCats" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-top:-6px;"></div>
-
-    <!-- Cards -->
-    <div id="arsCards" style="display:flex;flex-direction:column;gap:28px;"></div>
+      <button type="submit" class="fo font-black text-xl uppercase italic"
+        style="width:100%;padding:18px;background:#fff;color:#000;border-radius:12px;border:none;cursor:pointer;transition:.2s;"
+        onmouseover="this.style.background='var(--or)'" onmouseout="this.style.background='#fff'">
+        DESPLEGAR AL ARSENAL
+      </button>
+    </form>
   </div>
+ </div>
 </div>
 
-<!-- ═══════════ SCREEN: ADMIN ═══════════ -->
-<div class="screen" id="sc-admin">
-  <div class="si" style="display:flex;flex-direction:column;gap:16px;">
-
-    <!-- Auth -->
-    <div id="adminAuth" class="glass" style="padding:30px;text-align:center;max-width:300px;margin:0 auto;">
-      <i class="fas fa-user-shield" style="font-size:3rem;color:var(--or);display:block;margin-bottom:14px;"></i>
-      <h3 class="fo font-black uppercase text-lg italic" style="margin-bottom:16px;">Identificación</h3>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <input type="text"     id="adminUser" class="inp text-center font-black uppercase italic" placeholder="OPERADOR">
-        <input type="password" id="adminPin"  class="inp text-center font-black" style="font-size:22px;letter-spacing:.2em;" placeholder="PIN">
-        <button onclick="loginAdmin()" class="fo font-black uppercase italic"
-          style="width:100%;padding:16px;background:var(--or);color:#000;border-radius:12px;border:none;cursor:pointer;font-size:14px;"
-          onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--or)'">ACCEDER</button>
+<!-- ═══ SCREEN: META ═══ -->
+<div class="scr" id="sc-meta">
+ <div class="si" style="display:flex;flex-direction:column;gap:12px;">
+  <div class="gl" style="padding:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <i class="fas fa-robot" style="color:var(--or);"></i>
+        <span class="fo font-black" style="font-size:11px;text-transform:uppercase;color:var(--or);">INTEL AUTOMÁTICO</span>
+        <span style="background:rgba(255,136,0,.1);border:1px solid rgba(255,136,0,.2);color:var(--or);padding:2px 7px;border-radius:4px;font-size:8px;font-weight:900;font-family:'Orbitron',sans-serif;">Claude AI</span>
       </div>
+      <button id="aiBtn" onclick="fetchAIMeta()"
+        style="background:rgba(255,136,0,.1);border:1px solid rgba(255,136,0,.25);color:var(--or);padding:7px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:9px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+        <i class="fas fa-sync-alt"></i> ACTUALIZAR META
+      </button>
     </div>
-
-    <!-- Dashboard -->
-    <div id="adminDashboard" class="hidden" style="display:none;flex-direction:column;gap:16px;">
-      <div style="border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:12px;">
-        <h2 class="fo font-black text-2xl uppercase italic" style="color:var(--or);">OPS <span style="color:#fff;">MAESTRAS</span></h2>
-        <p style="font-size:9px;color:#555;text-transform:uppercase;font-weight:900;letter-spacing:.15em;margin-top:2px;">Consola Darcor_Ghost</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr;gap:12px;" class="md:grid-cols-3">
-        <!-- Staff -->
-        <div class="glass" style="padding:14px;border-top:2px solid var(--bl);">
-          <h4 class="fo font-black" style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--bl);margin-bottom:10px;">Staff</h4>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <input type="text"     id="new_staff_user" class="inp text-sm uppercase font-black" placeholder="NUEVO ADMIN">
-            <input type="password" id="new_staff_pin"  class="inp text-sm font-black" placeholder="PIN">
-            <button onclick="addStaff()" style="background:var(--bl);color:#fff;padding:9px;border-radius:8px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">REGISTRAR</button>
-            <div id="staffList" style="max-height:100px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;"></div>
-          </div>
-        </div>
-        <!-- Torneos -->
-        <div class="glass" style="padding:14px;border-top:2px solid var(--gn);">
-          <h4 class="fo font-black" style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gn);margin-bottom:10px;">Eventos</h4>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <input type="text" id="t_name"   class="inp text-sm font-black uppercase" placeholder="NOMBRE DEL TORNEO">
-            <input type="text" id="t_prize"  class="inp text-sm font-black" placeholder="PREMIO">
-            <select           id="t_status" class="inp text-sm font-black">
-              <option value="Activo">ACTIVO</option>
-              <option value="Finalizado">FINALIZADO</option>
-            </select>
-            <button onclick="saveTourney()" style="background:var(--gn);color:#000;padding:10px;border-radius:8px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">PUBLICAR</button>
-          </div>
-        </div>
-        <!-- Branding + WA -->
-        <div class="glass" style="padding:14px;border-top:2px solid var(--or);">
-          <h4 class="fo font-black" style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:10px;">Branding</h4>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <input type="text" id="cfg_logo_url" class="inp text-sm font-black" placeholder="URL LOGO">
-            <button onclick="saveSiteConfig()" style="background:var(--or);color:#000;padding:9px;border-radius:8px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">ACTUALIZAR</button>
-            <button onclick="document.getElementById('waModal').style.display='flex'"
-              style="background:rgba(18,140,126,0.18);border:1px solid rgba(18,140,126,0.35);color:#25D366;
-                     padding:9px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:10px;
-                     cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border-top:none;">
-              <i class="fab fa-whatsapp"></i> CONFIG ALERTAS WA
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Scores / Stats -->
-      <div style="display:grid;grid-template-columns:1fr;gap:12px;" class="md:grid-cols-2">
-        <div class="glass" style="padding:14px;border-top:2px solid #eab308;">
-          <h4 class="fo font-black" style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#eab308;margin-bottom:10px;">Calculadora Max Point</h4>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-            <select id="score_clan_sel" style="grid-column:1/-1;" class="inp text-sm font-black uppercase italic"></select>
-            <input type="number" id="score_pos"   class="inp text-sm font-black" placeholder="POSICIÓN">
-            <input type="number" id="score_kills" class="inp text-sm font-black" placeholder="KILLS">
-          </div>
-          <button onclick="saveTournamentScore()" style="width:100%;background:#eab308;color:#000;padding:12px;border-radius:10px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;margin-bottom:6px;">SUBIR SCORE</button>
-          <button onclick="clearTournamentScores()" style="width:100%;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;padding:8px;border-radius:8px;font-weight:900;font-size:10px;text-transform:uppercase;cursor:pointer;border-top:none;">RESETEAR</button>
-        </div>
-        <div class="glass" style="padding:14px;border-top:2px solid var(--rd);">
-          <h4 class="fo font-black" style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--rd);margin-bottom:10px;">Stats Globales</h4>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-            <select id="stat_clan_sel" style="grid-column:1/-1;" class="inp text-sm font-black uppercase italic"></select>
-            <input type="number" id="stat_wins"  class="inp text-sm font-black" placeholder="WINS">
-            <input type="number" id="stat_kills" class="inp text-sm font-black" placeholder="TOTAL KILLS">
-          </div>
-          <button onclick="saveGlobalStats()" style="width:100%;background:var(--rd);color:#fff;padding:12px;border-radius:10px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">ACTUALIZAR</button>
-        </div>
-      </div>
-
-      <!-- Collapsibles -->
-      <div style="display:flex;flex-direction:column;gap:6px;">
-        <details class="acol">
-          <summary><span style="color:var(--bl);"><i class="fas fa-file-invoice-dollar" style="margin-right:8px;"></i>Finanzas y Check-In</span><i class="fas fa-chevron-down"></i></summary>
-          <div class="glass" style="padding:10px;border-radius:10px;overflow-x:auto;">
-            <table style="width:100%;font-size:11px;border-collapse:collapse;">
-              <thead><tr style="text-align:left;">
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Clan</th>
-                <th class="atd" style="color:var(--bl);font-weight:900;text-transform:uppercase;">Ref. Pago</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Estado</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:right;">Acción</th>
-              </tr></thead>
-              <tbody id="adm_finance_table"></tbody>
-            </table>
-          </div>
-        </details>
-        <details class="acol">
-          <summary><span style="color:var(--or);"><i class="fas fa-sitemap" style="margin-right:8px;"></i>Generador de Brackets</span><i class="fas fa-chevron-down"></i></summary>
-          <div class="glass" style="padding:14px;border-radius:10px;text-align:center;">
-            <button onclick="generateBrackets()"
-              style="background:var(--or);color:#000;padding:10px 28px;border-radius:9px;font-family:'Orbitron',sans-serif;
-                     font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">
-              Generar Llaves de Combate
-            </button>
-            <div id="bracketDisplay" style="margin-top:14px;display:grid;grid-template-columns:1fr;gap:10px;text-align:left;" class="md:grid-cols-2"></div>
-          </div>
-        </details>
-        <details class="acol">
-          <summary><span><i class="fas fa-shield-alt" style="margin-right:8px;color:var(--or);"></i>Clanes Registrados</span><i class="fas fa-chevron-down"></i></summary>
-          <div class="glass" style="padding:10px;border-radius:10px;overflow-x:auto;">
-            <table style="width:100%;font-size:11px;border-collapse:collapse;">
-              <thead><tr style="text-align:left;">
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Clan</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Jugadores</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">WhatsApp</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Acción</th>
-              </tr></thead>
-              <tbody id="adm_clans_table"></tbody>
-            </table>
-          </div>
-        </details>
-        <details class="acol">
-          <summary><span><i class="fas fa-crosshairs" style="margin-right:8px;color:var(--or);"></i>Arsenal — Auditoría</span><i class="fas fa-chevron-down"></i></summary>
-          <div class="glass" style="padding:10px;border-radius:10px;overflow-x:auto;">
-            <table style="width:100%;font-size:11px;border-collapse:collapse;">
-              <thead><tr style="text-align:left;">
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Arma</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Modo</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Autor</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:right;">Del</th>
-              </tr></thead>
-              <tbody id="adm_metas_table"></tbody>
-            </table>
-          </div>
-        </details>
-        <details class="acol">
-          <summary><span><i class="fas fa-chart-bar" style="margin-right:8px;color:var(--bl);"></i>Historial Scores</span><i class="fas fa-chevron-down"></i></summary>
-          <div class="glass" style="padding:10px;border-radius:10px;overflow-x:auto;">
-            <table style="width:100%;font-size:11px;border-collapse:collapse;">
-              <thead><tr style="text-align:left;">
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Clan</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Pos</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Kills</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Pts</th>
-                <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Del</th>
-              </tr></thead>
-              <tbody id="adm_scores_table"></tbody>
-            </table>
-          </div>
-        </details>
-      </div>
-
-      <div style="text-align:center;padding-top:10px;opacity:.2;">
-        <button onclick="resetData()" class="fo" style="font-size:9px;text-transform:uppercase;font-weight:900;letter-spacing:.15em;background:none;border:none;color:#fff;cursor:pointer;"
-          onmouseover="this.style.color='red'" onmouseout="this.style.color='#fff'">[ PURGAR SISTEMA ]</button>
-      </div>
-    </div>
+    <div id="aiStatus" style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;">Meta Warzone 2025 — KOGOW · MK 78 · MX Guardian · KAR98K · WSP Stinger</div>
   </div>
+  <div class="gl" style="display:flex;border-radius:14px 14px 0 0;border-bottom:none;overflow:hidden;">
+    <div class="mtab on" id="mode-resurgimiento" onclick="setMode('Resurgimiento')">Resurgimiento</div>
+    <div class="mtab"    id="mode-ranked"        onclick="setMode('Ranked')">Ranked Play</div>
+  </div>
+  <div id="arsCats" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-top:-6px;"></div>
+  <div id="arsCards" style="display:flex;flex-direction:column;gap:28px;"></div>
+ </div>
 </div>
 
-<!-- Creator badge -->
-<div style="position:fixed;bottom:14px;right:14px;z-index:500;background:rgba(0,0,0,0.96);
-  border-left:3px solid var(--or);padding:6px 12px;border-radius:7px;
-  display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:11px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.6);">
-  <i class="fas fa-shield-alt" style="color:var(--or);font-size:12px;"></i>
-  <div style="line-height:1.3;">
-    <div style="font-size:7px;color:#555;text-transform:uppercase;letter-spacing:.1em;">Architect</div>
-    <div>Darcor_Ghost</div>
+<!-- ═══ SCREEN: ADMIN ═══ -->
+<div class="scr" id="sc-admin">
+ <div class="si" style="display:flex;flex-direction:column;gap:16px;">
+  <div id="adminAuth" class="gl" style="padding:30px;text-align:center;max-width:300px;margin:0 auto;">
+    <i class="fas fa-user-shield" style="font-size:3rem;color:var(--or);display:block;margin-bottom:14px;"></i>
+    <h3 class="fo font-black uppercase text-lg italic" style="margin-bottom:16px;">Identificación</h3>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <input type="text"     id="adminUser" class="inp text-center uppercase italic" placeholder="OPERADOR">
+      <input type="password" id="adminPin"  class="inp text-center" style="font-size:22px;letter-spacing:.2em;" placeholder="PIN">
+      <button onclick="loginAdmin()" class="fo font-black uppercase italic"
+        style="width:100%;padding:16px;background:var(--or);color:#000;border-radius:12px;border:none;cursor:pointer;"
+        onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--or)'">ACCEDER</button>
+    </div>
   </div>
+  <div id="adminDashboard" style="display:none;flex-direction:column;gap:14px;">
+    <div style="border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px;">
+      <h2 class="fo font-black text-2xl uppercase italic" style="color:var(--or);">OPS <span style="color:#fff;">MAESTRAS</span></h2>
+      <p style="font-size:9px;color:#555;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-top:2px;">Consola Darcor_Ghost</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+      <div class="gl" style="padding:14px;border-top:2px solid var(--bl);">
+        <h4 class="fo font-black" style="font-size:10px;color:var(--bl);text-transform:uppercase;margin-bottom:10px;">Staff</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <input type="text"     id="new_staff_user" class="inp text-sm uppercase" placeholder="NUEVO ADMIN">
+          <input type="password" id="new_staff_pin"  class="inp text-sm" placeholder="PIN">
+          <button onclick="addStaff()" style="background:var(--bl);color:#fff;padding:9px;border-radius:8px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">REGISTRAR</button>
+          <div id="staffList" style="display:flex;flex-direction:column;gap:4px;max-height:100px;overflow-y:auto;"></div>
+        </div>
+      </div>
+      <div class="gl" style="padding:14px;border-top:2px solid var(--gn);">
+        <h4 class="fo font-black" style="font-size:10px;color:var(--gn);text-transform:uppercase;margin-bottom:10px;">Eventos</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <input type="text" id="t_name"   class="inp text-sm uppercase" placeholder="NOMBRE DEL TORNEO">
+          <input type="text" id="t_prize"  class="inp text-sm" placeholder="PREMIO">
+          <select           id="t_status" class="inp text-sm"><option value="Activo">ACTIVO</option><option value="Finalizado">FINALIZADO</option></select>
+          <button onclick="saveTourney()" style="background:var(--gn);color:#000;padding:9px;border-radius:8px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">PUBLICAR</button>
+        </div>
+      </div>
+      <div class="gl" style="padding:14px;border-top:2px solid var(--or);">
+        <h4 class="fo font-black" style="font-size:10px;color:var(--or);text-transform:uppercase;margin-bottom:10px;">Branding</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <input type="text" id="cfg_logo" class="inp text-sm" placeholder="URL DEL LOGO">
+          <button onclick="saveSiteCfg()" style="background:var(--or);color:#000;padding:9px;border-radius:8px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">ACTUALIZAR</button>
+          <button onclick="document.getElementById('notifModal').style.display='flex';setNotifType('torneo')"
+            style="background:rgba(18,140,126,.18);border:1px solid rgba(18,140,126,.35);color:#25D366;padding:9px;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <i class="fab fa-whatsapp"></i> NOTIFICAR EQUIPOS
+          </button>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+      <div class="gl" style="padding:14px;border-top:2px solid #eab308;">
+        <h4 class="fo font-black" style="font-size:10px;color:#eab308;text-transform:uppercase;margin-bottom:10px;">Max Point Score</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <select id="score_clan_sel" class="inp text-sm uppercase italic"></select>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <input type="number" id="score_pos"   class="inp text-sm" placeholder="POSICIÓN">
+            <input type="number" id="score_kills" class="inp text-sm" placeholder="KILLS">
+          </div>
+          <button onclick="saveTournamentScore()" style="background:#eab308;color:#000;padding:12px;border-radius:10px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">SUBIR SCORE</button>
+          <button onclick="clearTournamentScores()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#f87171;padding:8px;border-radius:8px;font-weight:900;font-size:10px;text-transform:uppercase;border-top:none;cursor:pointer;">RESETEAR SCORES</button>
+        </div>
+      </div>
+      <div class="gl" style="padding:14px;border-top:2px solid var(--rd);">
+        <h4 class="fo font-black" style="font-size:10px;color:var(--rd);text-transform:uppercase;margin-bottom:10px;">Stats Globales</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <select id="stat_clan_sel" class="inp text-sm uppercase italic"></select>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <input type="number" id="stat_wins"  class="inp text-sm" placeholder="WINS">
+            <input type="number" id="stat_kills" class="inp text-sm" placeholder="KILLS">
+          </div>
+          <button onclick="saveGlobalStats()" style="background:var(--rd);color:#fff;padding:12px;border-radius:10px;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">ACTUALIZAR</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <details class="acol"><summary><span style="color:var(--bl);"><i class="fas fa-file-invoice-dollar" style="margin-right:8px;"></i>Finanzas y Check-In</span><i class="fas fa-chevron-down"></i></summary>
+        <div class="gl" style="padding:10px;border-radius:10px;overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;"><thead><tr>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">Clan</th>
+            <th class="atd" style="color:var(--bl);font-weight:900;text-transform:uppercase;text-align:left;">Ref. Pago</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">Estado</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:right;">Acción</th>
+          </tr></thead><tbody id="adm_finance_table"></tbody></table>
+        </div>
+      </details>
+      <details class="acol"><summary><span style="color:var(--or);"><i class="fas fa-sitemap" style="margin-right:8px;"></i>Generador de Brackets</span><i class="fas fa-chevron-down"></i></summary>
+        <div class="gl" style="padding:14px;border-radius:10px;text-align:center;">
+          <button onclick="generateBrackets()" style="background:var(--or);color:#000;padding:10px 28px;border-radius:9px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:11px;text-transform:uppercase;border:none;cursor:pointer;">Generar Llaves de Combate</button>
+          <div id="bracketDisplay" style="margin-top:14px;display:flex;flex-direction:column;gap:10px;text-align:left;"></div>
+        </div>
+      </details>
+      <details class="acol"><summary><span><i class="fas fa-shield-alt" style="margin-right:8px;color:var(--or);"></i>Clanes Registrados (Admin)</span><i class="fas fa-chevron-down"></i></summary>
+        <div class="gl" style="padding:10px;border-radius:10px;overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;"><thead><tr>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">Clan</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">Jugadores</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">WA</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;">Acción</th>
+          </tr></thead><tbody id="adm_clans_table"></tbody></table>
+        </div>
+      </details>
+      <details class="acol"><summary><span><i class="fas fa-crosshairs" style="margin-right:8px;color:var(--or);"></i>Arsenal — Auditoría</span><i class="fas fa-chevron-down"></i></summary>
+        <div class="gl" style="padding:10px;border-radius:10px;overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;"><thead><tr>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">Arma</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">Modo</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:left;">Autor</th>
+            <th class="atd" style="color:#555;font-weight:900;text-transform:uppercase;text-align:right;">Del</th>
+          </tr></thead><tbody id="adm_metas_table"></tbody></table>
+        </div>
+      </details>
+    </div>
+    <div style="text-align:center;padding-top:10px;opacity:.2;">
+      <button onclick="resetData()" class="fo" style="font-size:9px;text-transform:uppercase;font-weight:900;letter-spacing:.15em;background:none;border:none;color:#fff;cursor:pointer;"
+        onmouseover="this.style.color='red'" onmouseout="this.style.color='#fff'">[ PURGAR SISTEMA ]</button>
+    </div>
+  </div>
+ </div>
+</div>
+
+<!-- Badge -->
+<div style="position:fixed;bottom:14px;right:14px;z-index:500;background:rgba(0,0,0,.96);border-left:3px solid var(--or);padding:6px 12px;border-radius:7px;display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:11px;">
+  <i class="fas fa-shield-alt" style="color:var(--or);"></i>
+  <div style="line-height:1.3;"><div style="font-size:7px;color:#555;text-transform:uppercase;">Architect</div><div>Darcor_Ghost</div></div>
 </div>
 
 <script>
-// NAV HEIGHT
-function setNavH(){document.documentElement.style.setProperty('--nav-h',document.getElementById('app-nav').offsetHeight+'px');}
-window.addEventListener('resize',setNavH);
-setTimeout(setNavH,100);
+// ═══ NAVEGACIÓN ═══
+function setNavH(){document.documentElement.style.setProperty('--nh',document.getElementById('nav').offsetHeight+'px');}
+window.addEventListener('resize',setNavH);setTimeout(setNavH,100);
 
-// NAVIGATION — cada tab reemplaza pantalla completa
 function goTo(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
   document.getElementById('sc-'+id).classList.add('on');
   document.getElementById('nt-'+id).classList.add('on');
   document.getElementById('sc-'+id).scrollTop=0;
@@ -669,98 +513,134 @@ function goTo(id){
   if(id==='meta')    renderArsenal();
 }
 
-// TOAST
+// ═══ TOAST ═══
 function toast(msg,type=''){
   const t=document.getElementById('toast');
-  t.className=type; t.textContent=msg; t.classList.add('up');
+  t.className=type;t.textContent=msg;t.classList.add('up');
   setTimeout(()=>t.classList.remove('up'),3200);
 }
 
-// WHATSAPP CONFIG
-let waConfig=JSON.parse(localStorage.getItem('dae_wa'))||{phone:'',apiKey:'',enabled:false};
-document.getElementById('waPhone').value=waConfig.phone||'';
-document.getElementById('waApiKey').value=waConfig.apiKey||'';
-document.getElementById('waEnabled').checked=waConfig.enabled||false;
-
-async function sendWA(msg){
-  if(!waConfig.enabled||!waConfig.phone||!waConfig.apiKey)return;
-  try{await fetch(`https://api.callmebot.com/whatsapp.php?phone=${waConfig.phone}&text=${encodeURIComponent(msg)}&apikey=${waConfig.apiKey}`,{mode:'no-cors'});}
-  catch(e){console.log('WA sent');}
+// ═══ FB STATUS ═══
+function fbStatus(ok,msg){
+  const el=document.getElementById('fbst');
+  el.style.display='flex';
+  el.style.background=ok?'rgba(34,197,94,.15)':'rgba(239,68,68,.15)';
+  el.style.border=ok?'1px solid rgba(34,197,94,.3)':'1px solid rgba(239,68,68,.3)';
+  el.style.color=ok?'var(--gn)':'var(--rd)';
+  el.innerHTML=(ok?'🟢 ':'🔴 ')+msg;
+  if(ok)setTimeout(()=>{el.style.display='none';},3000);
 }
-function saveWaConfig(){
-  waConfig={phone:document.getElementById('waPhone').value.trim(),
-    apiKey:document.getElementById('waApiKey').value.trim(),
-    enabled:document.getElementById('waEnabled').checked};
-  localStorage.setItem('dae_wa',JSON.stringify(waConfig));
-  document.getElementById('waModal').style.display='none';
-  toast('CONFIGURACIÓN WA GUARDADA','gr');
-}
-async function testWaAlert(){toast('ENVIANDO...');await sendWA('⚡ LIGA DAE | Alertas activas.');toast('PRUEBA ENVIADA','gr');}
 
-// WEAPONS DB — Meta Warzone 2025
+// ═══ NOTIFICACIONES WA (sin API, todo vía wa.me) ═══
+const WA_GRUPO='https://chat.whatsapp.com/KKbEKeaREyAAhVgKFOGzig';
+let notifType='torneo';
+function setNotifType(tipo){
+  notifType=tipo;
+  const actStyle='padding:12px;border-radius:10px;font-family:\'Orbitron\',sans-serif;font-weight:900;font-size:10px;text-transform:uppercase;cursor:pointer;';
+  document.getElementById('ntype-torneo').style.cssText=actStyle+(tipo==='torneo'?'border:2px solid var(--or);background:rgba(255,136,0,.1);color:var(--or);':'border:2px solid #333;background:#111;color:#555;');
+  document.getElementById('ntype-privada').style.cssText=actStyle+(tipo==='privada'?'border:2px solid var(--gn);background:rgba(34,197,94,.1);color:var(--gn);':'border:2px solid #333;background:#111;color:#555;');
+  updateNotifPreview();
+}
+function buildNotifMsg(){
+  const titulo=(document.getElementById('notif_titulo')||{}).value||'';
+  const fecha=(document.getElementById('notif_fecha')||{}).value||'';
+  const premio=(document.getElementById('notif_premio')||{}).value||'';
+  const detalle=(document.getElementById('notif_detalle')||{}).value||'';
+  const emoji=notifType==='torneo'?'🏆':'🎮';
+  const tipo=notifType==='torneo'?'TORNEO':'PARTIDA PRIVADA';
+  let m=emoji+' *LIGA DAE* — '+tipo+'\n━━━━━━━━━━━━━━━━━━\n';
+  if(titulo)m+='📌 '+titulo+'\n';
+  if(fecha)m+='📅 '+fecha+'\n';
+  if(premio)m+='💰 Premio: '+premio+'\n';
+  if(detalle)m+='📋 '+detalle+'\n';
+  m+='━━━━━━━━━━━━━━━━━━\n✅ Confirma tu participación\n🔗 Liga DAE Command Center';
+  return m;
+}
+function updateNotifPreview(){
+  const el=document.getElementById('notifPreview');
+  if(el)el.textContent=buildNotifMsg();
+}
+function enviarNotifGrupo(){
+  const msg=buildNotifMsg();
+  try{navigator.clipboard.writeText(msg);}catch(e){}
+  window.open(WA_GRUPO,'_blank');
+  toast('MENSAJE COPIADO — Pégalo en el grupo ✓','gr');
+  setTimeout(()=>{document.getElementById('notifModal').style.display='none';},1500);
+}
+function mostrarBotonWA(name,msg){
+  const prev=document.getElementById('wa-reg-notif');if(prev)prev.remove();
+  const div=document.createElement('div');div.id='wa-reg-notif';
+  div.style.cssText='position:fixed;bottom:16px;left:12px;right:12px;z-index:4000;'+
+    'background:#128C7E;color:#fff;border-radius:14px;padding:14px 16px;'+
+    "font-family:'Orbitron',sans-serif;font-weight:900;font-size:11px;"+
+    'box-shadow:0 8px 30px rgba(0,0,0,.7);';
+  div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'+
+    '<span style="font-size:13px;"><i class="fab fa-whatsapp" style="margin-right:6px;font-size:17px;"></i>¡'+name+' REGISTRADO!</span>'+
+    '<button onclick="document.getElementById(\'wa-reg-notif\').remove()" style="background:rgba(0,0,0,.25);border:none;color:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:12px;">✕</button>'+
+    '</div>'+
+    '<div style="font-size:10px;opacity:.85;margin-bottom:10px;font-family:Rajdhani,sans-serif;font-weight:700;">Mensaje copiado ✓ — Abre el grupo y pega el mensaje</div>'+
+    '<div style="display:flex;gap:8px;">'+
+    '<a href="'+WA_GRUPO+'" target="_blank" style="flex:1;background:#fff;color:#128C7E;padding:11px;border-radius:9px;text-align:center;font-size:11px;font-weight:900;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fab fa-whatsapp"></i> ABRIR GRUPO LIGA DAE</a>'+
+    '<button onclick="document.getElementById(\'wa-reg-notif\').remove()" style="background:rgba(0,0,0,.25);border:none;color:#fff;padding:11px 14px;border-radius:9px;font-size:10px;font-weight:900;cursor:pointer;">OK</button>'+
+    '</div>';
+  document.body.appendChild(div);
+  setTimeout(()=>{if(div.parentNode)div.remove();},18000);
+}
+setTimeout(()=>setNotifType('torneo'),300);
+
+// ═══ WEAPONS DB ═══
 const WDB=[
-  {n:"KOGOW",            t:"Absolute Meta",c:"Fusiles de Asalto",p:"28.4%"},
-  {n:"MK 78",            t:"Absolute Meta",c:"Fusiles de Asalto",p:"22.1%"},
-  {n:"MX Guardian",      t:"Absolute Meta",c:"Fusiles de Asalto",p:"19.8%"},
-  {n:"RAM-7",            t:"Absolute Meta",c:"Fusiles de Asalto",p:"14.5%"},
-  {n:"STG44",            t:"Absolute Meta",c:"Fusiles de Asalto",p:"12.1%"},
-  {n:"BP50",             t:"Meta",         c:"Fusiles de Asalto",p:"8.3%"},
-  {n:"MCW",              t:"Meta",         c:"Fusiles de Asalto",p:"5.1%"},
-  {n:"SVA 545",          t:"Meta",         c:"Fusiles de Asalto",p:"4.7%"},
-  {n:"MTZ-556",          t:"Meta",         c:"Fusiles de Asalto",p:"3.9%"},
-  {n:"XM4",              t:"Meta",         c:"Fusiles de Asalto",p:"3.5%"},
-  {n:"Holger 556",       t:"Good",         c:"Fusiles de Asalto",p:"2.1%"},
-  {n:"TAQ-56",           t:"Good",         c:"Fusiles de Asalto",p:"1.8%"},
-  {n:"Kastov 762",       t:"Viable",       c:"Fusiles de Asalto",p:"0.9%"},
-  {n:"WSP Stinger",      t:"Absolute Meta",c:"Subfusiles",p:"26.3%"},
-  {n:"HRM-9",            t:"Absolute Meta",c:"Subfusiles",p:"18.7%"},
-  {n:"Striker 9",        t:"Absolute Meta",c:"Subfusiles",p:"15.4%"},
-  {n:"Rival-9",          t:"Absolute Meta",c:"Subfusiles",p:"13.2%"},
-  {n:"WSP-9",            t:"Absolute Meta",c:"Subfusiles",p:"11.5%"},
-  {n:"Superi 46",        t:"Meta",         c:"Subfusiles",p:"7.6%"},
-  {n:"ISO 9mm",          t:"Meta",         c:"Subfusiles",p:"5.2%"},
-  {n:"Lachmann Sub",     t:"Good",         c:"Subfusiles",p:"2.1%"},
-  {n:"Minibak",          t:"Good",         c:"Subfusiles",p:"1.7%"},
-  {n:"Vaznev-9K",        t:"Viable",       c:"Subfusiles",p:"0.8%"},
-  {n:"KAR98K",           t:"Absolute Meta",c:"Sniper",    p:"31.2%"},
-  {n:"XRK Stalker",      t:"Absolute Meta",c:"Sniper",    p:"18.5%"},
-  {n:"MORS",             t:"Meta",         c:"Sniper",    p:"9.4%"},
-  {n:"FJX Imperium",     t:"Meta",         c:"Sniper",    p:"7.2%"},
-  {n:"Victus XMR",       t:"Good",         c:"Sniper",    p:"3.1%"},
-  {n:"Signal 50",        t:"Viable",       c:"Sniper",    p:"1.2%"},
-  {n:"DG-58 LSW",        t:"Absolute Meta",c:"LMG",       p:"19.8%"},
-  {n:"TAQ Eradicator",   t:"Meta",         c:"LMG",       p:"8.4%"},
-  {n:"Sakin MG38",       t:"Good",         c:"LMG",       p:"3.2%"},
-  {n:"RPK",              t:"Viable",       c:"LMG",       p:"1.9%"},
-  {n:"Haymaker",         t:"Meta",         c:"Escopetas", p:"11.3%"},
-  {n:"Lockwood 300",     t:"Meta",         c:"Escopetas", p:"7.6%"},
-  {n:"Bryson 800",       t:"Good",         c:"Escopetas", p:"3.2%"},
-  {n:"DM56",             t:"Meta",         c:"Fusiles Tácticos",p:"6.8%"},
-  {n:"Lachmann-762",     t:"Meta",         c:"Fusiles Tácticos",p:"4.2%"},
-  {n:"MTZ Interceptor",  t:"Good",         c:"Fusiles Tácticos",p:"2.5%"},
-  {n:"TAQ-V",            t:"Good",         c:"Fusiles Tácticos",p:"1.9%"},
-  {n:"Renetti",          t:"Absolute Meta",c:"Pistolas",  p:"24.1%"},
-  {n:"X13 Auto",         t:"Meta",         c:"Pistolas",  p:"9.7%"},
-  {n:"TYR",              t:"Viable",       c:"Pistolas",  p:"1.6%"},
+  {n:'KOGOW',t:'Absolute Meta',c:'Fusiles de Asalto',p:'28.4%'},
+  {n:'MK 78',t:'Absolute Meta',c:'Fusiles de Asalto',p:'22.1%'},
+  {n:'MX Guardian',t:'Absolute Meta',c:'Fusiles de Asalto',p:'19.8%'},
+  {n:'RAM-7',t:'Absolute Meta',c:'Fusiles de Asalto',p:'14.5%'},
+  {n:'STG44',t:'Absolute Meta',c:'Fusiles de Asalto',p:'12.1%'},
+  {n:'BP50',t:'Meta',c:'Fusiles de Asalto',p:'8.3%'},
+  {n:'MCW',t:'Meta',c:'Fusiles de Asalto',p:'5.1%'},
+  {n:'SVA 545',t:'Meta',c:'Fusiles de Asalto',p:'4.7%'},
+  {n:'MTZ-556',t:'Meta',c:'Fusiles de Asalto',p:'3.9%'},
+  {n:'XM4',t:'Meta',c:'Fusiles de Asalto',p:'3.5%'},
+  {n:'Holger 556',t:'Good',c:'Fusiles de Asalto',p:'2.1%'},
+  {n:'TAQ-56',t:'Good',c:'Fusiles de Asalto',p:'1.8%'},
+  {n:'WSP Stinger',t:'Absolute Meta',c:'Subfusiles',p:'26.3%'},
+  {n:'HRM-9',t:'Absolute Meta',c:'Subfusiles',p:'18.7%'},
+  {n:'Striker 9',t:'Absolute Meta',c:'Subfusiles',p:'15.4%'},
+  {n:'Rival-9',t:'Absolute Meta',c:'Subfusiles',p:'13.2%'},
+  {n:'WSP-9',t:'Absolute Meta',c:'Subfusiles',p:'11.5%'},
+  {n:'Superi 46',t:'Meta',c:'Subfusiles',p:'7.6%'},
+  {n:'ISO 9mm',t:'Meta',c:'Subfusiles',p:'5.2%'},
+  {n:'Lachmann Sub',t:'Good',c:'Subfusiles',p:'2.1%'},
+  {n:'KAR98K',t:'Absolute Meta',c:'Sniper',p:'31.2%'},
+  {n:'XRK Stalker',t:'Absolute Meta',c:'Sniper',p:'18.5%'},
+  {n:'MORS',t:'Meta',c:'Sniper',p:'9.4%'},
+  {n:'FJX Imperium',t:'Meta',c:'Sniper',p:'7.2%'},
+  {n:'Victus XMR',t:'Good',c:'Sniper',p:'3.1%'},
+  {n:'DG-58 LSW',t:'Absolute Meta',c:'LMG',p:'19.8%'},
+  {n:'TAQ Eradicator',t:'Meta',c:'LMG',p:'8.4%'},
+  {n:'Haymaker',t:'Meta',c:'Escopetas',p:'11.3%'},
+  {n:'Lockwood 300',t:'Meta',c:'Escopetas',p:'7.6%'},
+  {n:'DM56',t:'Meta',c:'Fusiles Tácticos',p:'6.8%'},
+  {n:'Lachmann-762',t:'Meta',c:'Fusiles Tácticos',p:'4.2%'},
+  {n:'Renetti',t:'Absolute Meta',c:'Pistolas',p:'24.1%'},
+  {n:'X13 Auto',t:'Meta',c:'Pistolas',p:'9.7%'},
 ];
 const ATTS={
-  muzzle:["Supresor Sónico","Bore-40 Suppressor","Quartermaster Suppressor","Volund Suppressor","Compensador Casus","Zenith Compensator","Freno de Boca"],
-  barrel:["Cañón Pro Largo","Cañón Heavy Support","Cañón Bruen Heavy","Cañón Ranger","Zulu OP3","Bruen Guerilla","Prazisions","Tectonic Micro"],
-  optic: ["Corio Eagleseye 2.5x","JAK Glassless","MORS Dot","Mira Kepler","Forge Tac Delta 4","Range Caller","KEPLER Microflex"],
-  stock: ["Culata de Combate","Culata Táctica","Sin Culata","Culata Pesada","Rescue Stock","FTAC Ripper 56"],
-  mag:   ["Tambor 60 Balas","Cargador 45 Balas","Tambor 100 Balas","Balas Alta Vel.","40 Rds","7.62 High Velocity","9mm Hollowpoint"],
-  under: ["Bruen Support","DR-6 Handstop","Empuñadura Pesada","Tope de Mano","Xten Phantom","Bruen Heavy Support","VX Pineapple"]
+  muzzle:['Supresor Sónico','Bore-40 Suppressor','Quartermaster Suppressor','Volund Suppressor','Compensador Casus'],
+  barrel:['Cañón Pro Largo','Cañón Heavy Support','Cañón Bruen Heavy','Zulu OP3','Bruen Guerilla','Prazisions','Tectonic Micro'],
+  optic:['Corio Eagleseye 2.5x','JAK Glassless','MORS Dot','Mira Kepler','Range Caller','KEPLER Microflex'],
+  stock:['Culata de Combate','Culata Táctica','Sin Culata','Culata Pesada','Rescue Stock'],
+  mag:['Tambor 60 Balas','Cargador 45 Balas','Tambor 100 Balas','Balas Alta Vel.','40 Rds','9mm Hollowpoint'],
+  under:['Bruen Support','DR-6 Handstop','Empuñadura Pesada','Tope de Mano','Xten Phantom','Bruen Heavy Support']
 };
 
-// STATE
-let globalMetas  =JSON.parse(localStorage.getItem('dae_gm11'))||[];
-let tourneyScores=JSON.parse(localStorage.getItem('dae_ts11'))||[];
-let globalLB     =JSON.parse(localStorage.getItem('dae_lb11'))||[];
-let tournaments  =JSON.parse(localStorage.getItem('dae_tm11'))||[];
-let customWeapons=JSON.parse(localStorage.getItem('dae_cw11'))||[];
-let customAtts   =JSON.parse(localStorage.getItem('dae_ca11'))||{};
-let aiWeapons    =JSON.parse(localStorage.getItem('dae_ai11'))||[];
-let clanKDStats=[];
+// ═══ STATE ═══
+let globalMetas  =JSON.parse(localStorage.getItem('dae_gm'))||[];
+let tourneyScores=JSON.parse(localStorage.getItem('dae_ts'))||[];
+let globalLB     =JSON.parse(localStorage.getItem('dae_lb'))||[];
+let customWeapons=JSON.parse(localStorage.getItem('dae_cw'))||[];
+let customAtts   =JSON.parse(localStorage.getItem('dae_ca'))||{};
+let aiWeapons    =JSON.parse(localStorage.getItem('dae_ai'))||[];
+let clanKDStats=[], confirmedClans=[];
 let curMode='Resurgimiento',curCat='Todos';
 let activeType=null,selWeapon=null;
 let selAtts={muzzle:null,barrel:null,optic:null,stock:null,mag:null,under:null};
@@ -770,48 +650,41 @@ function allWeapons(){
   [...WDB,...customWeapons,...aiWeapons].forEach(w=>m.set(w.n.toUpperCase(),w));
   return Array.from(m.values());
 }
-function allAtts(t){return [...new Set([...(ATTS[t]||[]),...(customAtts[t]||[])])];}
+function allAtts(t){return[...new Set([...(ATTS[t]||[]),(customAtts[t]||[])])].flat();}
 
-// POOL MODAL
+// ═══ POOL MODAL ═══
 function closeModal(){document.getElementById('poolModal').style.display='none';}
 function openPool(type){
   activeType=type;
   document.getElementById('poolModal').style.display='flex';
-  const isWep=type==='weapon';
-  document.getElementById('customItemCat').classList.toggle('hidden',!isWep);
-  document.getElementById('modalTitle').textContent=isWep?'ARSENAL DE COMBATE':type.toUpperCase();
-  renderPool(isWep?'Todos':null);
+  document.getElementById('customItemCat').style.display=type==='weapon'?'block':'none';
+  document.getElementById('modalTitle').textContent=type==='weapon'?'ARSENAL DE COMBATE':type.toUpperCase();
+  renderPool(type==='weapon'?'Todos':null);
 }
 function renderPool(filter){
-  const grid=document.getElementById('poolGrid');
-  grid.innerHTML='';
+  const grid=document.getElementById('poolGrid');grid.innerHTML='';
   const tc={'Absolute Meta':'color:var(--or)','Meta':'color:var(--bl)','Good':'color:var(--gn)','Viable':'color:#666'};
   if(activeType==='weapon'){
     const pool=(!filter||filter==='Todos')?allWeapons():allWeapons().filter(w=>w.c===filter);
-    grid.innerHTML=pool.map(w=>`<div onclick="pickItem('${esc(w.n)}','${esc(w.c)}','${esc(w.t)}','${w.p}')" class="pi">
+    grid.innerHTML=pool.map(w=>`<div onclick="pickItem('${w.n.replace(/'/g,"&#39;")}','${w.c}','${w.t}','${w.p}')" class="pi">
       <div style="${tc[w.t]||''};font-size:8px;font-family:'Orbitron',sans-serif;margin-bottom:3px;">${w.t}</div>
       <div>${w.n}</div></div>`).join('');
     const cats=['Todos','Fusiles de Asalto','Subfusiles','Sniper','LMG','Escopetas','Fusiles Tácticos','Pistolas'];
-    document.getElementById('modalFilters').innerHTML=cats.map(c=>
-      `<button onclick="renderPool('${c}')" class="fb ${filter===c?'on':''}">${c}</button>`).join('');
+    document.getElementById('modalFilters').innerHTML=cats.map(c=>`<button onclick="renderPool('${c}')" class="fb ${filter===c?'on':''}">${c}</button>`).join('');
   } else {
-    grid.innerHTML=allAtts(activeType).map(a=>
-      `<div onclick="pickItem('${esc(a)}','','','')" class="pi">${a}</div>`).join('');
+    const pool=allAtts(activeType);
+    grid.innerHTML=pool.map(a=>`<div onclick="pickItem('${a.replace(/'/g,"&#39;")}','','','')" class="pi">${a}</div>`).join('');
     document.getElementById('modalFilters').innerHTML='';
   }
 }
-function esc(s){return (s+'').replace(/'/g,"&#39;").replace(/"/g,'&quot;');}
 function pickItem(name,cat,status,pick){
   if(activeType==='weapon'){
     selWeapon={name,cat,status,pick};
-    document.getElementById('selectedWeaponDisplay').innerHTML=
-      `<div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.4rem;color:var(--or);font-style:italic;">${name}</div>
-       <div style="font-size:9px;color:#666;margin-top:4px;text-transform:uppercase;">${cat} · ${status}</div>`;
+    document.getElementById('weapDisplay').innerHTML=`<div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.4rem;color:var(--or);font-style:italic;">${name}</div><div style="font-size:9px;color:#666;margin-top:4px;text-transform:uppercase;">${cat} · ${status}</div>`;
   } else {
     selAtts[activeType]=name;
-    const el=document.getElementById('slot-'+activeType);
-    el.innerHTML=`<span style="font-size:8px;color:var(--bl);font-weight:900;text-transform:uppercase;">${activeType}</span>
-      <span style="font-size:10px;font-weight:900;text-transform:uppercase;margin-top:3px;word-break:break-all;">${name}</span>`;
+    const el=document.getElementById('sl-'+activeType);
+    el.innerHTML=`<span style="font-size:8px;color:var(--bl);font-weight:900;text-transform:uppercase;">${activeType}</span><span style="font-size:10px;font-weight:900;text-transform:uppercase;margin-top:3px;">${name}</span>`;
     el.classList.add('sel');
   }
   closeModal();
@@ -822,83 +695,56 @@ function submitCustomItem(){
   if(activeType==='weapon'){
     const cat=document.getElementById('customItemCat').value;
     customWeapons.push({n:name,t:'Viable',c:cat,p:'N/A'});
-    localStorage.setItem('dae_cw11',JSON.stringify(customWeapons));
-    toast('ARMA REGISTRADA: '+name,'gr');
-    renderPool('Todos');
+    localStorage.setItem('dae_cw',JSON.stringify(customWeapons));
+    toast('ARMA AGREGADA: '+name,'gr');renderPool('Todos');
   } else {
     if(!customAtts[activeType])customAtts[activeType]=[];
     customAtts[activeType].push(name);
-    localStorage.setItem('dae_ca11',JSON.stringify(customAtts));
-    toast('ACCESORIO REGISTRADO','gr');
-    renderPool(null);
+    localStorage.setItem('dae_ca',JSON.stringify(customAtts));
+    toast('ACCESORIO AGREGADO','gr');renderPool(null);
   }
   document.getElementById('customItemName').value='';
 }
 
-// META HARDCODED Warzone 2025
-function syncMetaIntel(silent=false){
+// ═══ META SYNC ═══
+function syncMeta(silent=false){
   if(!silent)toast('SINCRONIZANDO META 2025...');
   const H=[
-    {name:"KOGOW",cat:"Fusiles de Asalto",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"28.4%",
-     attachments:{muzzle:"Bore-40 Suppressor",barrel:"Cañón Pro Largo",optic:"Corio Eagleseye 2.5x",stock:"Culata de Combate",mag:"Tambor 60 Balas",under:"DR-6 Handstop"}},
-    {name:"MK 78",cat:"Fusiles de Asalto",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"22.1%",
-     attachments:{muzzle:"Supresor Sónico",barrel:"Cañón Heavy Support",optic:"JAK Glassless",stock:"Culata Táctica",mag:"Tambor 60 Balas",under:"Bruen Support"}},
-    {name:"MX Guardian",cat:"Fusiles de Asalto",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"19.8%",
-     attachments:{muzzle:"Quartermaster Suppressor",barrel:"Bruen Guerilla",optic:"Corio Eagleseye 2.5x",stock:"Rescue Stock",mag:"Tambor 60 Balas",under:"Bruen Heavy Support"}},
-    {name:"WSP Stinger",cat:"Subfusiles",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"26.3%",
-     attachments:{muzzle:"Bore-40 Suppressor",barrel:"Tectonic Micro",optic:"JAK Glassless",stock:"Sin Culata",mag:"Cargador 45 Balas",under:"DR-6 Handstop"}},
-    {name:"HRM-9",cat:"Subfusiles",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"18.7%",
-     attachments:{muzzle:"Zenith Compensator",barrel:"Cañón Heavy Support",optic:"MORS Dot",stock:"Culata Táctica",mag:"40 Rds",under:"Tope de Mano"}},
-    {name:"Rival-9",cat:"Subfusiles",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"13.2%",
-     attachments:{muzzle:"Supresor Sónico",barrel:"Cañón Pro Largo",optic:"KEPLER Microflex",stock:"Culata Táctica",mag:"Cargador 45 Balas",under:"Xten Phantom"}},
-    {name:"KAR98K",cat:"Sniper",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"31.2%",
-     attachments:{muzzle:"Supresor Sónico",barrel:"Prazisions",optic:"Range Caller",stock:"Sin Culata",mag:"7.62 High Velocity",under:"N/A"}},
-    {name:"XRK Stalker",cat:"Sniper",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"18.5%",
-     attachments:{muzzle:"Volund Suppressor",barrel:"Cañón Bruen Heavy",optic:"Forge Tac Delta 4",stock:"Culata Pesada",mag:"Balas Alta Vel.",under:"N/A"}},
-    {name:"DG-58 LSW",cat:"LMG",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"19.8%",
-     attachments:{muzzle:"Quartermaster Suppressor",barrel:"Cañón Bruen Heavy",optic:"Corio Eagleseye 2.5x",stock:"Culata Pesada",mag:"Tambor 100 Balas",under:"Bruen Heavy Support"}},
-    {name:"Renetti",cat:"Pistolas",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"24.1%",
-     attachments:{muzzle:"Compensador Casus",barrel:"Tectonic Micro",optic:"MORS Dot",stock:"N/A",mag:"9mm Hollowpoint",under:"DR-6 Handstop"}},
-    {name:"RAM-7",cat:"Fusiles de Asalto",mode:"Resurgimiento",metaStatus:"Absolute Meta",author:"DAE INTEL",pick:"14.5%",
-     attachments:{muzzle:"Supresor Sónico",barrel:"Cañón Ranger",optic:"JAK Glassless",stock:"Culata de Combate",mag:"Tambor 60 Balas",under:"Bruen Support"}},
-    {name:"Haymaker",cat:"Escopetas",mode:"Resurgimiento",metaStatus:"Meta",author:"DAE INTEL",pick:"11.3%",
-     attachments:{muzzle:"Bore-40 Suppressor",barrel:"Cañón Pro Largo",optic:"MORS Dot",stock:"Culata de Combate",mag:"Tambor 60 Balas",under:"Bruen Support"}},
-    // RANKED
-    {name:"KOGOW",cat:"Fusiles de Asalto",mode:"Ranked",metaStatus:"Absolute Meta",author:"TOP 250",pick:"31.0%",
-     attachments:{muzzle:"Bore-40 Suppressor",barrel:"Cañón Pro Largo",optic:"Corio Eagleseye 2.5x",stock:"Culata de Combate",mag:"Tambor 60 Balas",under:"Bruen Support"}},
-    {name:"Striker 9",cat:"Subfusiles",mode:"Ranked",metaStatus:"Absolute Meta",author:"TOP 250",pick:"24.8%",
-     attachments:{muzzle:"Supresor Sónico",barrel:"Zulu OP3",optic:"JAK Glassless",stock:"Rescue Stock",mag:"40 Rds",under:"Xten Phantom"}},
-    {name:"KAR98K",cat:"Sniper",mode:"Ranked",metaStatus:"Absolute Meta",author:"TOP 250",pick:"28.5%",
-     attachments:{muzzle:"Supresor Sónico",barrel:"Prazisions",optic:"Range Caller",stock:"Sin Culata",mag:"7.62 High Velocity",under:"N/A"}},
-    {name:"Rival-9",cat:"Subfusiles",mode:"Ranked",metaStatus:"Absolute Meta",author:"TOP 250",pick:"19.3%",
-     attachments:{muzzle:"Bore-40 Suppressor",barrel:"Tectonic Micro",optic:"KEPLER Microflex",stock:"Sin Culata",mag:"Cargador 45 Balas",under:"DR-6 Handstop"}},
-    {name:"WSP Stinger",cat:"Subfusiles",mode:"Ranked",metaStatus:"Meta",author:"TOP 250",pick:"11.2%",
-     attachments:{muzzle:"Bore-40 Suppressor",barrel:"Tectonic Micro",optic:"JAK Glassless",stock:"Sin Culata",mag:"Cargador 45 Balas",under:"DR-6 Handstop"}},
-    {name:"DG-58 LSW",cat:"LMG",mode:"Ranked",metaStatus:"Meta",author:"TOP 250",pick:"8.7%",
-     attachments:{muzzle:"Quartermaster Suppressor",barrel:"Cañón Bruen Heavy",optic:"Corio Eagleseye 2.5x",stock:"Culata Pesada",mag:"Tambor 100 Balas",under:"Bruen Heavy Support"}},
-    {name:"MK 78",cat:"Fusiles de Asalto",mode:"Ranked",metaStatus:"Absolute Meta",author:"TOP 250",pick:"18.4%",
-     attachments:{muzzle:"Supresor Sónico",barrel:"Cañón Heavy Support",optic:"JAK Glassless",stock:"Culata Táctica",mag:"Tambor 60 Balas",under:"Bruen Support"}},
+    {name:'KOGOW',cat:'Fusiles de Asalto',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'28.4%',attachments:{muzzle:'Bore-40 Suppressor',barrel:'Cañón Pro Largo',optic:'Corio Eagleseye 2.5x',stock:'Culata de Combate',mag:'Tambor 60 Balas',under:'DR-6 Handstop'}},
+    {name:'MK 78',cat:'Fusiles de Asalto',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'22.1%',attachments:{muzzle:'Supresor Sónico',barrel:'Cañón Heavy Support',optic:'JAK Glassless',stock:'Culata Táctica',mag:'Tambor 60 Balas',under:'Bruen Support'}},
+    {name:'MX Guardian',cat:'Fusiles de Asalto',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'19.8%',attachments:{muzzle:'Quartermaster Suppressor',barrel:'Bruen Guerilla',optic:'Corio Eagleseye 2.5x',stock:'Rescue Stock',mag:'Tambor 60 Balas',under:'Bruen Heavy Support'}},
+    {name:'WSP Stinger',cat:'Subfusiles',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'26.3%',attachments:{muzzle:'Bore-40 Suppressor',barrel:'Tectonic Micro',optic:'JAK Glassless',stock:'Sin Culata',mag:'Cargador 45 Balas',under:'DR-6 Handstop'}},
+    {name:'HRM-9',cat:'Subfusiles',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'18.7%',attachments:{muzzle:'Bore-40 Suppressor',barrel:'Cañón Heavy Support',optic:'MORS Dot',stock:'Culata Táctica',mag:'40 Rds',under:'Tope de Mano'}},
+    {name:'Rival-9',cat:'Subfusiles',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'13.2%',attachments:{muzzle:'Supresor Sónico',barrel:'Cañón Pro Largo',optic:'KEPLER Microflex',stock:'Culata Táctica',mag:'Cargador 45 Balas',under:'Xten Phantom'}},
+    {name:'KAR98K',cat:'Sniper',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'31.2%',attachments:{muzzle:'Supresor Sónico',barrel:'Prazisions',optic:'Range Caller',stock:'Sin Culata',mag:'N/A',under:'N/A'}},
+    {name:'XRK Stalker',cat:'Sniper',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'18.5%',attachments:{muzzle:'Volund Suppressor',barrel:'Cañón Bruen Heavy',optic:'Range Caller',stock:'Culata Pesada',mag:'N/A',under:'N/A'}},
+    {name:'DG-58 LSW',cat:'LMG',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'19.8%',attachments:{muzzle:'Quartermaster Suppressor',barrel:'Cañón Bruen Heavy',optic:'Corio Eagleseye 2.5x',stock:'Culata Pesada',mag:'Tambor 100 Balas',under:'Bruen Heavy Support'}},
+    {name:'Renetti',cat:'Pistolas',mode:'Resurgimiento',metaStatus:'Absolute Meta',author:'DAE INTEL',pick:'24.1%',attachments:{muzzle:'Compensador Casus',barrel:'Tectonic Micro',optic:'MORS Dot',stock:'N/A',mag:'9mm Hollowpoint',under:'DR-6 Handstop'}},
+    {name:'KOGOW',cat:'Fusiles de Asalto',mode:'Ranked',metaStatus:'Absolute Meta',author:'TOP 250',pick:'31.0%',attachments:{muzzle:'Bore-40 Suppressor',barrel:'Cañón Pro Largo',optic:'Corio Eagleseye 2.5x',stock:'Culata de Combate',mag:'Tambor 60 Balas',under:'Bruen Support'}},
+    {name:'Striker 9',cat:'Subfusiles',mode:'Ranked',metaStatus:'Absolute Meta',author:'TOP 250',pick:'24.8%',attachments:{muzzle:'Supresor Sónico',barrel:'Zulu OP3',optic:'JAK Glassless',stock:'Rescue Stock',mag:'40 Rds',under:'Xten Phantom'}},
+    {name:'KAR98K',cat:'Sniper',mode:'Ranked',metaStatus:'Absolute Meta',author:'TOP 250',pick:'28.5%',attachments:{muzzle:'Supresor Sónico',barrel:'Prazisions',optic:'Range Caller',stock:'Sin Culata',mag:'N/A',under:'N/A'}},
+    {name:'Rival-9',cat:'Subfusiles',mode:'Ranked',metaStatus:'Absolute Meta',author:'TOP 250',pick:'19.3%',attachments:{muzzle:'Bore-40 Suppressor',barrel:'Tectonic Micro',optic:'KEPLER Microflex',stock:'Sin Culata',mag:'Cargador 45 Balas',under:'DR-6 Handstop'}},
+    {name:'MK 78',cat:'Fusiles de Asalto',mode:'Ranked',metaStatus:'Absolute Meta',author:'TOP 250',pick:'18.4%',attachments:{muzzle:'Supresor Sónico',barrel:'Cañón Heavy Support',optic:'JAK Glassless',stock:'Culata Táctica',mag:'Tambor 60 Balas',under:'Bruen Support'}},
   ];
   H.forEach(item=>{
     const idx=globalMetas.findIndex(m=>m.name===item.name&&m.mode===item.mode&&m.author===item.author);
-    if(idx>=0)globalMetas[idx]=item; else globalMetas.unshift(item);
+    if(idx>=0)globalMetas[idx]=item;else globalMetas.unshift(item);
   });
-  localStorage.setItem('dae_gm11',JSON.stringify(globalMetas));
+  localStorage.setItem('dae_gm',JSON.stringify(globalMetas));
   if(!silent)renderArsenal();
 }
 
-// AI META
+// ═══ AI META ═══
 async function fetchAIMeta(){
   const btn=document.getElementById('aiBtn');
   const st=document.getElementById('aiStatus');
-  btn.disabled=true;
-  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> ANALIZANDO...';
-  st.innerHTML='<span style="color:var(--or);">▋</span> Consultando inteligencia táctica Warzone 2025...';
+  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> ANALIZANDO...';
+  st.textContent='Consultando inteligencia táctica Warzone 2025...';
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,
-        messages:[{role:"user",content:`Eres experto en Warzone 2025. Dame la meta ACTUAL incluyendo KOGOW, MK 78, MX Guardian, Rival-9, WSP Stinger, STG44, KAR98K y cualquier arma nueva de temporadas recientes de 2025. Responde SOLO JSON sin texto extra:\n[{"n":"NOMBRE","t":"Absolute Meta","c":"CATEGORIA","p":"PICK%","mode":"Resurgimiento","attachments":{"muzzle":"...","barrel":"...","optic":"...","stock":"...","mag":"...","under":"..."}}]\nCategorías: Fusiles de Asalto, Subfusiles, Sniper, LMG, Escopetas, Pistolas, Fusiles Tácticos. Tiers: Absolute Meta, Meta, Good, Viable. Mínimo 12 armas.`}]})});
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,
+        messages:[{role:'user',content:'Eres experto en Warzone 2025. Dame la meta actual incluyendo KOGOW, MK 78, MX Guardian, Rival-9, WSP Stinger, KAR98K y armas nuevas de 2025. Responde SOLO JSON sin texto extra:\n[{"n":"NOMBRE","t":"Absolute Meta","c":"CATEGORIA","p":"PICK%","mode":"Resurgimiento","attachments":{"muzzle":"...","barrel":"...","optic":"...","stock":"...","mag":"...","under":"..."}}]\nCategorias: Fusiles de Asalto, Subfusiles, Sniper, LMG, Escopetas, Pistolas, Fusiles Tacticos. Tiers: Absolute Meta, Meta, Good, Viable. Min 12 armas.'}]})});
     const data=await res.json();
     const raw=(data.content||[]).map(b=>b.text||'').join('').trim();
     const m=raw.match(/\[[\s\S]*\]/);
@@ -914,40 +760,27 @@ async function fetchAIMeta(){
         const mode=w.mode||'Resurgimiento';
         const entry={name:w.n,cat:w.c,mode,metaStatus:w.t,author:'🤖 AI',pick:w.p||'N/A',attachments:w.attachments,aiGen:true};
         const idx=globalMetas.findIndex(m=>m.name.toUpperCase()===up&&m.mode===mode&&m.author==='🤖 AI');
-        if(idx>=0)globalMetas[idx]=entry; else globalMetas.unshift(entry);
+        if(idx>=0)globalMetas[idx]=entry;else globalMetas.unshift(entry);
       }
     });
-    localStorage.setItem('dae_ai11',JSON.stringify(aiWeapons));
-    localStorage.setItem('dae_gm11',JSON.stringify(globalMetas));
-    st.innerHTML=`<span style="color:var(--gn);">✓</span> Meta AI actualizada — <strong style="color:var(--or);">${added} armas nuevas</strong>`;
-    renderArsenal();
-    toast(`META AI SYNC ✓ · ${added} armas nuevas`,'gr');
-  }catch(e){
-    st.innerHTML=`<span style="color:var(--rd);">⚠</span> Error AI — usando meta local`;
-    toast('ERROR SYNC — META LOCAL ACTIVA','rd');
-  }finally{
-    btn.disabled=false;
-    btn.innerHTML='<i class="fas fa-sync-alt"></i> ACTUALIZAR META';
-  }
+    localStorage.setItem('dae_ai',JSON.stringify(aiWeapons));
+    localStorage.setItem('dae_gm',JSON.stringify(globalMetas));
+    st.innerHTML='<span style="color:var(--gn);">✓</span> Meta AI actualizada — '+added+' armas nuevas';
+    renderArsenal();toast('META AI SYNC ✓ · '+added+' nuevas','gr');
+  }catch(e){st.innerHTML='<span style="color:var(--rd);">⚠</span> Error AI — usando meta local';toast('ERROR — USANDO META LOCAL','rd');}
+  finally{btn.disabled=false;btn.innerHTML='<i class="fas fa-sync-alt"></i> ACTUALIZAR META';}
 }
 
-// ARSENAL RENDER
-const TIERS=[
-  {key:"Absolute Meta",label:"ABSOLUTE META",col:"var(--or)"},
-  {key:"Meta",         label:"META",          col:"var(--bl)"},
-  {key:"Good",         label:"GOOD",          col:"var(--gn)"},
-  {key:"Viable",       label:"VIABLE",        col:"#666"},
-];
+// ═══ ARSENAL ═══
+const TIERS=[{key:'Absolute Meta',label:'ABSOLUTE META',col:'var(--or)'},{key:'Meta',label:'META',col:'var(--bl)'},{key:'Good',label:'GOOD',col:'var(--gn)'},{key:'Viable',label:'VIABLE',col:'#666'}];
 function setMode(m){
-  curMode=m;
+  curMode=m;curCat='Todos';
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('on'));
   document.getElementById('mode-'+m.toLowerCase().replace(' ','-')).classList.add('on');
-  curCat='Todos';
   renderArsenal();
 }
 function renderArsenal(){
-  const cont=document.getElementById('arsCards');
-  const flt=document.getElementById('arsCats');
+  const cont=document.getElementById('arsCards'),flt=document.getElementById('arsCats');
   if(!cont)return;
   const metas=globalMetas.filter(m=>m.mode===curMode);
   const cats=['Todos',...new Set(metas.map(m=>m.cat))];
@@ -955,88 +788,46 @@ function renderArsenal(){
   const list=curCat==='Todos'?metas:metas.filter(m=>m.cat===curCat);
   cont.innerHTML='';
   TIERS.forEach(({key,label,col})=>{
-    const group=list.filter(m=>m.metaStatus===key);
-    if(!group.length)return;
+    const group=list.filter(m=>m.metaStatus===key);if(!group.length)return;
     const sec=document.createElement('div');
-    sec.className='ani';
-    sec.innerHTML=`
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-        <span class="fo font-black text-lg uppercase italic" style="color:${col};">${label}</span>
-        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(255,136,0,0.3),transparent);"></div>
-        <span style="font-size:9px;font-weight:900;color:#444;">${group.length} armas</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr;gap:14px;" class="md:grid-cols-2 lg:grid-cols-3">
-        ${group.map((m,i)=>`
-          <div class="mc" style="padding:14px;padding-right:26px;animation-delay:${i*.06}s;" class="ani">
-            <div class="tbar" style="color:${col};">${label}</div>
-            <div style="margin-bottom:10px;">
-              <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-                <span style="font-size:8px;font-weight:900;color:var(--or);text-transform:uppercase;letter-spacing:.1em;">${m.cat}</span>
-                ${m.aiGen?'<span style="background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.22);color:var(--or);padding:1px 6px;border-radius:3px;font-size:7px;font-weight:900;font-family:Orbitron,sans-serif;">AI</span>':''}
-              </div>
-              <h4 class="fo font-black" style="font-size:1.2rem;color:#fff;font-style:italic;line-height:1.1;">${m.name}</h4>
-              <div style="font-size:8px;color:#444;font-weight:700;text-transform:uppercase;margin-top:2px;">AUTH: ${m.author}</div>
-            </div>
-            <div style="margin-bottom:10px;">
-              ${Object.entries(m.attachments||{}).filter(([,v])=>v&&v!=='N/A').map(([slot,val])=>`
-                <div class="attr">
-                  <span style="color:#555;font-weight:900;text-transform:uppercase;font-size:8px;">${slot}</span>
-                  <span style="color:#ccc;font-size:9px;font-weight:700;">${val}</span>
-                </div>`).join('')}
-            </div>
-            <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
-              <div>
-                <div style="font-size:7px;font-weight:900;color:#444;text-transform:uppercase;">PICK RATE</div>
-                <div class="fo font-black" style="font-size:13px;color:${col};">${m.pick||'—'}</div>
-              </div>
-              <div class="pb" style="flex:1;"><div class="pbf" style="width:${Math.min(parseFloat(m.pick)||0,100)}%;"></div></div>
-            </div>
-          </div>`).join('')}
-      </div>`;
+    sec.innerHTML=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><span class="fo font-black text-lg uppercase italic" style="color:${col};">${label}</span><div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(255,136,0,.3),transparent);"></div><span style="font-size:9px;font-weight:900;color:#444;">${group.length} armas</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;">
+      ${group.map(m=>`<div class="mc" style="padding:14px;padding-right:26px;">
+        <div class="tbar" style="color:${col};">${label}</div>
+        <div style="margin-bottom:10px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+            <span style="font-size:8px;font-weight:900;color:var(--or);text-transform:uppercase;">${m.cat}</span>
+            ${m.aiGen?'<span style="background:rgba(255,136,0,.1);border:1px solid rgba(255,136,0,.2);color:var(--or);padding:1px 6px;border-radius:3px;font-size:7px;font-weight:900;font-family:Orbitron,sans-serif;">AI</span>':''}
+          </div>
+          <h4 class="fo font-black" style="font-size:1.2rem;color:#fff;font-style:italic;line-height:1.1;">${m.name}</h4>
+          <div style="font-size:8px;color:#444;font-weight:700;text-transform:uppercase;margin-top:2px;">${m.author}</div>
+        </div>
+        <div style="margin-bottom:10px;">${Object.entries(m.attachments||{}).filter(([,v])=>v&&v!=='N/A').map(([slot,val])=>`<div class="attr"><span style="color:#555;font-weight:900;text-transform:uppercase;font-size:8px;">${slot}</span><span style="color:#ccc;font-size:9px;font-weight:700;">${val}</span></div>`).join('')}</div>
+        <div style="border-top:1px solid rgba(255,255,255,.05);padding-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <div><div style="font-size:7px;font-weight:900;color:#444;text-transform:uppercase;">PICK RATE</div><div class="fo font-black" style="font-size:13px;color:${col};">${m.pick||'—'}</div></div>
+          <div class="pb" style="flex:1;"><div class="pbf" style="width:${Math.min(parseFloat(m.pick)||0,100)}%;"></div></div>
+        </div>
+      </div>`).join('')}
+    </div>`;
     cont.appendChild(sec);
   });
-  if(!cont.children.length)
-    cont.innerHTML=`<div style="text-align:center;padding:60px;opacity:.2;"><i class="fas fa-crosshairs" style="font-size:2rem;display:block;margin-bottom:10px;"></i><p class="fo font-black" style="font-size:11px;text-transform:uppercase;">Sin datos para este modo</p></div>`;
+  if(!cont.children.length)cont.innerHTML='<div style="text-align:center;padding:60px;opacity:.2;"><i class="fas fa-crosshairs" style="font-size:2rem;display:block;margin-bottom:10px;"></i><p class="fo font-black" style="font-size:11px;text-transform:uppercase;">Sin armas meta aún</p></div>';
   const adm=document.getElementById('adm_metas_table');
-  if(adm)adm.innerHTML=globalMetas.map((m,i)=>`<tr>
-    <td class="atd font-black" style="color:#fff;font-style:italic;">${m.name}</td>
-    <td class="atd" style="color:var(--bl);">${m.mode}</td>
-    <td class="atd" style="color:#888;">${m.author}</td>
-    <td class="atd" style="text-align:right;"><button onclick="removeMeta(${i})" style="background:rgba(239,68,68,0.1);color:#f87171;padding:3px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">DEL</button></td>
-  </tr>`).join('');
+  if(adm)adm.innerHTML=globalMetas.map((m,i)=>`<tr><td class="atd font-black" style="color:#fff;font-style:italic;">${m.name}</td><td class="atd" style="color:var(--bl);">${m.mode}</td><td class="atd" style="color:#888;">${m.author}</td><td class="atd" style="text-align:right;"><button onclick="removeMeta(${i})" style="background:rgba(239,68,68,.1);color:#f87171;padding:3px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">DEL</button></td></tr>`).join('');
 }
 
-// RANKING
+// ═══ RANKING ═══
 function renderRanking(){
-  const makeCard=(x,i,cols)=>`<div class="rc ${i===0?'r1':''}">
-    <div class="fo font-black" style="font-size:1.5rem;color:${i===0?'var(--or)':i===1?'#9ca3af':i===2?'#b45309':'#444'};">#${i+1}</div>
-    <div style="flex:1;">${cols}</div>
-  </div>`;
+  const mk=(x,i,inner)=>`<div class="rc ${i===0?'r1':''}"><div class="fo font-black" style="font-size:1.5rem;color:${i===0?'var(--or)':i===1?'#9ca3af':i===2?'#b45309':'#444'};">#${i+1}</div><div style="flex:1;">${inner}</div></div>`;
   const tc=document.getElementById('tournamentRanking');
-  if(tc){const s=[...tourneyScores].sort((a,b)=>b.pts-a.pts);
-    tc.innerHTML=s.map((x,i)=>makeCard(x,i,`<div class="fo font-black text-sm uppercase italic">${x.clan}</div>
-      <div style="font-size:9px;color:#555;font-weight:700;">Pos ${x.pos} · ${x.kills} kills</div>
-      <div class="fo font-black" style="font-size:1.1rem;color:var(--or);margin-top:2px;">${x.pts} <span style="font-size:9px;color:#555;">PTS</span></div>`
-    )).join('')||'<p style="text-align:center;opacity:.2;padding:30px;font-weight:900;text-transform:uppercase;font-size:11px;">Sin scores aún</p>';
-  }
+  if(tc){const s=[...tourneyScores].sort((a,b)=>b.pts-a.pts);tc.innerHTML=s.map((x,i)=>mk(x,i,`<div class="fo font-black text-sm uppercase italic">${x.clan}</div><div style="font-size:9px;color:#555;font-weight:700;">Pos ${x.pos} · ${x.kills} kills</div><div class="fo font-black" style="font-size:1.1rem;color:var(--or);">${x.pts} <span style="font-size:9px;color:#555;">PTS</span></div>`)).join('')||'<p style="text-align:center;opacity:.2;padding:30px;font-weight:900;text-transform:uppercase;font-size:11px;">Sin scores aún</p>';}
   const gl=document.getElementById('leaderboardList');
-  if(gl){const s=[...globalLB].sort((a,b)=>b.wins-a.wins);
-    gl.innerHTML=s.map((x,i)=>makeCard(x,i,`<div class="fo font-black text-sm uppercase italic">${x.clan}</div>
-      <div style="display:flex;gap:12px;font-weight:900;font-size:11px;margin-top:4px;">
-        <span style="color:var(--gn);">${x.wins} WINS</span><span style="color:var(--bl);">${x.kills} KILLS</span></div>`
-    )).join('')||'<p style="text-align:center;opacity:.2;padding:30px;font-weight:900;text-transform:uppercase;font-size:11px;">Sin ranking global</p>';
-  }
+  if(gl){const s=[...globalLB].sort((a,b)=>b.wins-a.wins);gl.innerHTML=s.map((x,i)=>mk(x,i,`<div class="fo font-black text-sm uppercase italic">${x.clan}</div><div style="display:flex;gap:12px;font-weight:900;font-size:11px;margin-top:4px;"><span style="color:var(--gn);">${x.wins} WINS</span><span style="color:var(--bl);">${x.kills} KILLS</span></div>`)).join('')||'<p style="text-align:center;opacity:.2;padding:30px;font-weight:900;text-transform:uppercase;font-size:11px;">Sin ranking aún</p>';}
   const kd=document.getElementById('kdRankingList');
-  if(kd&&clanKDStats.length){
-    const s=[...clanKDStats].filter(c=>c.avgKD>0).sort((a,b)=>b.avgKD-a.avgKD);
-    kd.innerHTML=s.map((c,i)=>{const col=c.avgKD>=2?'var(--gn)':c.avgKD>=1.3?'#eab308':'var(--rd)';
-      return makeCard(c,i,`<div class="fo font-black text-sm uppercase italic">${c.name}</div>
-        <div class="fo font-black" style="font-size:1.1rem;color:${col};margin-top:4px;">KD ${c.avgKD.toFixed(2)}</div>`);
-    }).join('');
-  }
+  if(kd&&clanKDStats.length){const s=[...clanKDStats].filter(c=>c.avgKD>0).sort((a,b)=>b.avgKD-a.avgKD);kd.innerHTML=s.map((c,i)=>{const col=c.avgKD>=2?'var(--gn)':c.avgKD>=1.3?'#eab308':'var(--rd)';return mk(c,i,`<div class="fo font-black text-sm uppercase italic">${c.name}</div><div class="fo font-black" style="font-size:1.1rem;color:${col};margin-top:4px;">KD ${c.avgKD.toFixed(2)}</div>`);}).join('');}
 }
 
-// ACTIONS
+// ═══ ACCIONES ═══
 function shareTournamentResults(){
   const s=[...tourneyScores].sort((a,b)=>b.pts-a.pts);
   if(!s.length)return toast('SIN SCORES AÚN');
@@ -1044,7 +835,7 @@ function shareTournamentResults(){
   if(navigator.share)navigator.share({title:'LIGA DAE',text:txt});
   else navigator.clipboard.writeText(txt).then(()=>toast('COPIADO ✓','gr'));
 }
-function removeMeta(i){if(confirm('¿ELIMINAR?')){globalMetas.splice(i,1);localStorage.setItem('dae_gm11',JSON.stringify(globalMetas));renderArsenal();toast('ELIMINADO');}}
+function removeMeta(i){if(confirm('¿ELIMINAR?')){globalMetas.splice(i,1);localStorage.setItem('dae_gm',JSON.stringify(globalMetas));renderArsenal();toast('ELIMINADO');}}
 function saveTournamentScore(){
   const clan=document.getElementById('score_clan_sel').value;
   const pos=parseInt(document.getElementById('score_pos').value);
@@ -1053,10 +844,10 @@ function saveTournamentScore(){
   const pts=Math.max(0,(30-pos)*10+kills*2);
   const idx=tourneyScores.findIndex(s=>s.clan===clan);
   if(idx>=0)tourneyScores[idx]={clan,pos,kills,pts};else tourneyScores.push({clan,pos,kills,pts});
-  localStorage.setItem('dae_ts11',JSON.stringify(tourneyScores));
-  toast(`${clan}: ${pts}pts`,'gr');renderRanking();
+  localStorage.setItem('dae_ts',JSON.stringify(tourneyScores));
+  toast(clan+': '+pts+' pts','gr');renderRanking();
 }
-function clearTournamentScores(){if(confirm('¿RESETEAR?')){tourneyScores=[];localStorage.setItem('dae_ts11',JSON.stringify(tourneyScores));renderRanking();toast('RESETEADO');}}
+function clearTournamentScores(){if(confirm('¿RESETEAR SCORES?')){tourneyScores=[];localStorage.setItem('dae_ts',JSON.stringify(tourneyScores));renderRanking();toast('RESETEADO');}}
 function saveGlobalStats(){
   const clan=document.getElementById('stat_clan_sel').value;
   const wins=parseInt(document.getElementById('stat_wins').value);
@@ -1064,37 +855,35 @@ function saveGlobalStats(){
   if(!clan||isNaN(wins)||isNaN(kills))return toast('DATOS INCOMPLETOS');
   const idx=globalLB.findIndex(l=>l.clan===clan);
   if(idx>=0)globalLB[idx]={clan,wins,kills};else globalLB.push({clan,wins,kills});
-  localStorage.setItem('dae_lb11',JSON.stringify(globalLB));
+  localStorage.setItem('dae_lb',JSON.stringify(globalLB));
   toast('STATS ACTUALIZADOS','gr');renderRanking();
 }
-function saveSiteConfig(){
-  const url=document.getElementById('cfg_logo_url').value.trim();
-  if(url)document.querySelectorAll('.site-logo').forEach(img=>img.src=url);
+function saveSiteCfg(){
+  const url=document.getElementById('cfg_logo').value.trim();
+  if(url)document.querySelectorAll('#sitelogo').forEach(img=>img.src=url);
   toast('ACTUALIZADO','gr');
 }
-function resetData(){if(confirm('¿PURGAR SISTEMA?')){localStorage.clear();location.reload();}}
+function resetData(){if(confirm('¿PURGAR TODO?')){localStorage.clear();location.reload();}}
 
-// INIT
+// ═══ INIT ═══
 window.addEventListener('load',()=>{
   setNavH();
-  syncMetaIntel(true);
-  const t=tournaments[0];
-  if(t){document.getElementById('torneyName').textContent=t.name;document.getElementById('torneyPrize').textContent='PREMIO: '+(t.prize||'Por definir');}
-  // Armería form
+  syncMeta(true);
+  // Form Armería
   document.getElementById('metaForm').onsubmit=e=>{
     e.preventDefault();
-    const clan=document.getElementById('metaClanSelector').value;
+    const clan=document.getElementById('metaClanSel').value;
     if(!clan||!selWeapon)return toast('SELECCIONA ESCUADRA Y ARMA');
-    const entry={name:selWeapon.name,cat:selWeapon.cat,mode:document.getElementById('metaModeSelector').value,
+    const entry={name:selWeapon.name,cat:selWeapon.cat,mode:document.getElementById('metaModeSel').value,
       metaStatus:selWeapon.status,author:clan,pick:selWeapon.pick,attachments:{...selAtts}};
     const idx=globalMetas.findIndex(m=>m.name===entry.name&&m.mode===entry.mode&&m.author===clan);
     if(idx>=0)globalMetas[idx]=entry;else globalMetas.unshift(entry);
-    localStorage.setItem('dae_gm11',JSON.stringify(globalMetas));
+    localStorage.setItem('dae_gm',JSON.stringify(globalMetas));
     selWeapon=null;selAtts={muzzle:null,barrel:null,optic:null,stock:null,mag:null,under:null};
-    document.getElementById('selectedWeaponDisplay').innerHTML=`<i class="fas fa-crosshairs" style="font-size:2.5rem;color:#1c1c1c;display:block;margin-bottom:8px;"></i><p style="font-size:11px;font-weight:900;text-transform:uppercase;color:#3a3a3a;font-style:italic;">ELEGIR ARMA META</p>`;
+    document.getElementById('weapDisplay').innerHTML='<i class="fas fa-crosshairs" style="font-size:2.5rem;color:#1c1c1c;display:block;margin-bottom:8px;"></i><p style="font-size:11px;font-weight:900;text-transform:uppercase;color:#3a3a3a;font-style:italic;">TOCA PARA ELEGIR ARMA META</p>';
     ['muzzle','barrel','optic','stock','mag','under'].forEach(s=>{
-      const el=document.getElementById('slot-'+s);el.className='asl';
-      el.innerHTML=`<span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">${s}</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>`;
+      const el=document.getElementById('sl-'+s);el.className='asl';
+      el.innerHTML='<span style="font-size:8px;font-weight:900;text-transform:uppercase;color:#3a3a3a;">'+s+'</span><i class="fas fa-plus" style="margin-top:4px;color:#1c1c1c;font-size:10px;"></i>';
     });
     toast('META DEPLOYADA ✓','gr');goTo('meta');
   };
@@ -1102,60 +891,102 @@ window.addEventListener('load',()=>{
 </script>
 
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import{getFirestore,collection,addDoc,onSnapshot,query,orderBy,doc,deleteDoc,updateDoc,getDocs,where}
-  from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  from'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-const cfg={apiKey:"AIzaSyCJYpz-0rTh_53p_eaTq2f1HojGssXEMg8",authDomain:"liga-dae.firebaseapp.com",
-  projectId:"liga-dae",storageBucket:"liga-dae.appspot.com",
-  messagingSenderId:"233100115005",appId:"1:233100115005:web:ffb44a98059955c70b3e54"};
+const cfg={
+  apiKey:'AIzaSyCJYpz-0rTh_53p_eaTq2f1HojGssXEMg8',
+  authDomain:'liga-dae.firebaseapp.com',
+  projectId:'liga-dae',
+  storageBucket:'liga-dae.appspot.com',
+  messagingSenderId:'233100115005',
+  appId:'1:233100115005:web:ffb44a98059955c70b3e54'
+};
 const app=initializeApp(cfg);
 const db=getFirestore(app);
 
-// LOGIN
-window.loginAdmin=async()=>{
-  const user=document.getElementById('adminUser').value.trim();
-  const pin=document.getElementById('adminPin').value;
-  if(!user||!pin)return toast('INGRESA TUS CREDENCIALES');
-  if(user.toLowerCase()==='darcor'&&pin==='2210'){grant(user);return;}
-  toast('VERIFICANDO...');
-  try{
-    const q=query(collection(db,'staff'),where('user','==',user),where('pin','==',pin));
-    const snap=await getDocs(q);
-    if(!snap.empty)grant(user);else toast('ACCESO DENEGADO','rd');
-  }catch{toast('ERROR DE CONEXIÓN','rd');}
-};
-function grant(user){
-  document.getElementById('adminAuth').classList.add('hidden');
-  document.getElementById('adminAuth').style.display='none';
-  document.getElementById('adminDashboard').style.display='flex';
-  document.getElementById('adminDashboard').classList.remove('hidden');
-  toast('BIENVENIDO '+user.toUpperCase()+' ⚡','gr');
+// ─ RENDER CLANES ─
+function renderClanes(docs){
+  let html='',finHtml='',admHtml='',selHtml='<option value="">-- SELECCIONAR CLAN --</option>';
+  confirmedClans=[];clanKDStats=[];
+  docs.forEach(({c,id})=>{
+    const players=[c.p1,c.p2,c.p3,c.p4].filter(Boolean);
+    if(c.checkedIn)confirmedClans.push(c.name);
+    clanKDStats.push({name:c.name,players,avgKD:0,totalKD:0,count:0});
+    html+=`<div class="sqc ${c.checkedIn?'ok':''}">
+      <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.05);">
+        <div style="font-size:8px;font-weight:900;text-transform:uppercase;color:${c.checkedIn?'var(--gn)':'var(--or)'};margin-bottom:2px;">${c.checkedIn?'✅ CONFIRMADO':'⏳ PENDIENTE'}</div>
+        <div class="fo font-black text-sm italic" style="color:var(--or);">${c.name}</div>
+      </div>
+      ${players.map((p,i)=>`<div class="sqph"><span style="font-size:8px;color:#444;font-weight:900;">${i===0?'👑 CAP':'⚔️ OP'+(i+1)}</span><span class="fm" style="font-size:10px;" data-pid="${p}">${p.split('#')[0]}</span></div>`).join('')}
+      <div style="padding:7px 12px;background:rgba(0,0,0,.25);display:flex;justify-content:space-between;font-size:8px;font-weight:900;color:#444;text-transform:uppercase;">
+        <span>REF: <span style="color:var(--bl);">${c.payRef||'-'}</span></span>
+        <span>${c.phone?'📱'+c.phone.slice(-4):''}</span>
+      </div>
+    </div>`;
+    finHtml+=`<tr><td class="atd font-black" style="color:#fff;font-style:italic;">${c.name}</td><td class="atd" style="color:var(--bl);">${c.payRef||'-'}</td><td class="atd font-black" style="color:${c.checkedIn?'var(--gn)':'var(--rd)'};">${c.checkedIn?'✅ CONF.':'❌ PEND.'}</td><td class="atd" style="text-align:right;"><button onclick="window.toggleCI('${id}',${c.checkedIn})" style="background:#1c1c1c;color:#ccc;padding:4px 9px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">${c.checkedIn?'UNCHECK':'CHECK ✓'}</button></td></tr>`;
+    admHtml+=`<tr><td class="atd font-black" style="color:var(--or);font-style:italic;">${c.name}</td><td class="atd" style="font-size:10px;">${players.join('<br>')}</td><td class="atd" style="color:var(--gn);font-size:10px;">${c.phone||'-'}</td><td class="atd"><button onclick="window.editClan('${id}','${c.name}','${c.p1||''}','${c.p2||''}','${c.p3||''}','${c.phone||''}')" style="background:rgba(59,130,246,.15);color:var(--bl);padding:4px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;margin-right:4px;">EDITAR</button><button onclick="window.delFire('clanes','${id}')" style="background:rgba(239,68,68,.1);color:#f87171;padding:4px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">DEL</button></td></tr>`;
+    selHtml+=`<option value="${c.name}">${c.name}</option>`;
+  });
+  const grid=document.getElementById('clanGrid');
+  if(grid)grid.innerHTML=html||'<div style="grid-column:1/-1;text-align:center;padding:40px;opacity:.25;"><i class="fas fa-users" style="font-size:2rem;display:block;margin-bottom:8px;"></i><p class="fo font-black" style="font-size:11px;text-transform:uppercase;">Sin escuadras registradas aún</p></div>';
+  const fin=document.getElementById('adm_finance_table');if(fin)fin.innerHTML=finHtml;
+  const adm=document.getElementById('adm_clans_table');if(adm)adm.innerHTML=admHtml;
+  ['metaClanSel','score_clan_sel','stat_clan_sel'].forEach(sid=>{const el=document.getElementById(sid);if(el)el.innerHTML=selHtml;});
+  document.getElementById('clanCounter').textContent=docs.length;
+  setTimeout(()=>{
+    document.querySelectorAll('[data-pid]').forEach(el=>{
+      const pid=el.dataset.pid;
+      const kd=(Math.random()*(2.8-.5)+.5).toFixed(2);
+      const col=kd>=2?'var(--gn)':kd>=1.3?'#eab308':'var(--rd)';
+      el.innerHTML=pid.split('#')[0]+' <span class="fo" style="font-size:8px;color:'+col+';">KD '+kd+'</span>';
+      clanKDStats.forEach(c=>{if(c.players.includes(pid)){c.totalKD=(c.totalKD||0)+parseFloat(kd);c.count=(c.count||0)+1;c.avgKD=c.totalKD/c.count;}});
+    });
+  },700);
 }
 
-// STAFF
-window.addStaff=async()=>{
-  const user=document.getElementById('new_staff_user').value.trim().toUpperCase();
-  const pin=document.getElementById('new_staff_pin').value;
-  if(!user||!pin)return toast('COMPLETA LOS CAMPOS');
-  await addDoc(collection(db,'staff'),{user,pin});
-  toast('STAFF REGISTRADO','gr');
-  document.getElementById('new_staff_user').value='';
-  document.getElementById('new_staff_pin').value='';
-};
-onSnapshot(collection(db,'staff'),snap=>{
-  const el=document.getElementById('staffList');
-  if(el)el.innerHTML=snap.docs.map(d=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.04);padding:7px 10px;border-radius:7px;">
-      <span style="font-size:10px;font-weight:900;text-transform:uppercase;color:var(--bl);font-style:italic;">${d.data().user}</span>
-      <button onclick="window.delFire('staff','${d.id}')" style="color:var(--rd);background:none;border:none;cursor:pointer;"><i class="fas fa-trash"></i></button>
-    </div>`).join('');
-});
+// ─ LISTENER CLANES ─
+fbStatus(false,'Conectando a Firebase...');
+onSnapshot(
+  query(collection(db,'clanes'),orderBy('fecha','desc')),
+  snap=>{
+    fbStatus(true,'Firebase conectado ✓');
+    renderClanes(snap.docs.map(d=>({c:d.data(),id:d.id})));
+    // Scores table
+    const sa=document.getElementById('adm_scores_table')||document.createElement('tbody');
+    const sc=JSON.parse(localStorage.getItem('dae_ts')||'[]');
+    sa.innerHTML=sc.map((s,i)=>`<tr><td class="atd font-black">${s.clan}</td><td class="atd" style="color:var(--bl);">${s.pos}</td><td class="atd" style="color:var(--or);">${s.kills}</td><td class="atd fo font-black" style="color:var(--gn);">${s.pts}</td><td class="atd"><button onclick="(()=>{let sc=JSON.parse(localStorage.getItem('dae_ts')||'[]');sc.splice(${i},1);localStorage.setItem('dae_ts',JSON.stringify(sc));tourneyScores=sc;renderRanking();})()" style="background:rgba(239,68,68,.1);color:#f87171;padding:3px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">DEL</button></td></tr>`).join('');
+    // Brackets
+    window.generateBrackets=()=>{
+      if(confirmedClans.length<2)return toast('MÍNIMO 2 CLANES CON CHECK-IN');
+      const s=[...confirmedClans].sort(()=>.5-Math.random());
+      const d=document.getElementById('bracketDisplay');d.innerHTML='';
+      for(let i=0;i<s.length;i+=2){
+        if(s[i+1])d.innerHTML+=`<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:14px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;"><span class="fo font-black italic text-sm" style="color:var(--or);">${s[i]}</span><span style="color:#fff;font-weight:900;padding:0 10px;">⚔️ VS ⚔️</span><span class="fo font-black italic text-sm" style="color:var(--bl);">${s[i+1]}</span></div>`;
+        else d.innerHTML+=`<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,136,0,.15);padding:14px;border-radius:10px;text-align:center;"><span class="fo font-black italic text-sm" style="color:var(--or);">${s[i]}</span><div style="font-size:9px;color:#555;margin-top:3px;font-weight:900;">BYE — PASE DIRECTO</div></div>`;
+      }
+    };
+  },
+  err=>{
+    fbStatus(false,'Error: '+err.code+' — Ve a Firebase Console > Firestore > Reglas y cambia a: allow read, write: if true;');
+    toast('ERROR FIREBASE: '+err.code,'rd');
+    // Mostrar instrucciones de Firestore rules
+    const grid=document.getElementById('clanGrid');
+    if(grid)grid.innerHTML=`<div style="grid-column:1/-1;padding:20px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:12px;">
+      <p class="fo font-black" style="font-size:11px;color:var(--rd);margin-bottom:10px;">⚠ ERROR FIREBASE: ${err.code}</p>
+      <p style="font-size:12px;color:#ccc;margin-bottom:8px;">Para solucionar, ve a <strong style="color:var(--or);">console.firebase.google.com</strong></p>
+      <p style="font-size:12px;color:#ccc;margin-bottom:4px;">→ Proyecto liga-dae → Firestore → Reglas</p>
+      <p style="font-size:12px;color:#ccc;margin-bottom:8px;">→ Cambia las reglas a:</p>
+      <code style="background:#000;color:var(--gn);padding:10px;border-radius:8px;display:block;font-size:11px;font-family:'Share Tech Mono',monospace;">rules_version = '2';<br>service cloud.firestore {<br>&nbsp;match /databases/{db}/documents {<br>&nbsp;&nbsp;match /{doc=**} {<br>&nbsp;&nbsp;&nbsp;allow read, write: if true;<br>&nbsp;&nbsp;}<br>&nbsp;}<br>}</code>
+    </div>`;
+  }
+);
 
-// REGISTRO CLAN
+// ─ REGISTRO ─
 document.getElementById('regForm').onsubmit=async e=>{
   e.preventDefault();
-  const btn=e.target.querySelector('button[type="submit"]');
+  const btn=document.getElementById('regBtn');
   const data={
     name:document.getElementById('clanName').value.trim().toUpperCase(),
     phone:document.getElementById('clanPhone').value.trim(),
@@ -1171,154 +1002,47 @@ document.getElementById('regForm').onsubmit=async e=>{
     await addDoc(collection(db,'clanes'),data);
     toast('¡'+data.name+' REGISTRADO! ⚡','gr');
     e.target.reset();
-    const msg=`🎮 *LIGA DAE* — NUEVA ESCUADRA 🔥\n`+
-      `🏴 Clan: *${data.name}*\n`+
-      `👑 Cap: ${data.p1}\n`+
-      `⚔️ OP2: ${data.p2||'-'}\n`+
-      `⚔️ OP3: ${data.p3||'-'}\n`+
-      `💳 Ref: ${data.payRef}\n`+
-      `📱 WA: ${data.phone||'-'}\n`+
-      `🕒 ${new Date().toLocaleTimeString('es')}\n`+
-      `━━━━━━━━━━━━━━\n`+
-      `🔗 chat.whatsapp.com/KKbEKeaREyAAhVgKFOGzig`;
+    const msg='🔥 *LIGA DAE* — NUEVA ESCUADRA\n━━━━━━━━━━━━━━━━━━\n🏴 Clan: *'+data.name+'*\n👑 Cap: '+data.p1+'\n⚔️ OP2: '+(data.p2||'-')+'\n⚔️ OP3: '+(data.p3||'-')+'\n💳 Ref: '+data.payRef+'\n📱 WA: '+(data.phone||'-')+'\n🕒 '+new Date().toLocaleTimeString('es')+'\n━━━━━━━━━━━━━━━━━━';
     try{await navigator.clipboard.writeText(msg);}catch(e){}
-    sendWA(msg);
-    showWANotif(data.name,msg);
-  }catch(err){console.error(err);toast('ERROR AL GUARDAR','rd');}
+    mostrarBotonWA(data.name,msg);
+  }catch(err){console.error(err);toast('ERROR AL GUARDAR — '+err.code,'rd');}
   finally{btn.disabled=false;btn.textContent='CONFIRMAR REGISTRO';}
 };
 
-function showWANotif(name,msg){
-  const div=document.createElement('div');
-  div.className='wa-notif';
-  div.style.cssText=`position:fixed;bottom:70px;left:12px;right:12px;z-index:4000;
-    background:#128C7E;color:#fff;border-radius:14px;padding:14px 16px;
-    font-family:'Orbitron',sans-serif;font-weight:900;font-size:11px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.6);`;
-  div.innerHTML=`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <span><i class="fab fa-whatsapp" style="margin-right:6px;font-size:16px;"></i>¡${name} REGISTRADO!</span>
-      <button onclick="this.parentElement.parentElement.remove()" style="background:rgba(0,0,0,0.2);border:none;color:#fff;border-radius:50%;width:22px;height:22px;cursor:pointer;">✕</button>
-    </div>
-    <div style="font-size:9px;opacity:0.85;margin-bottom:10px;">Mensaje copiado al portapapeles — pégalo en el grupo</div>
-    <div style="display:flex;gap:8px;">
-      <a href="https://chat.whatsapp.com/KKbEKeaREyAAhVgKFOGzig" target="_blank"
-        style="flex:1;background:#fff;color:#128C7E;padding:9px;border-radius:9px;text-align:center;
-               font-size:10px;font-weight:900;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">
-        <i class="fab fa-whatsapp"></i> ABRIR GRUPO
-      </a>
-      <button onclick="this.parentElement.parentElement.remove()"
-        style="background:rgba(0,0,0,0.2);border:none;color:#fff;padding:9px 14px;border-radius:9px;font-size:10px;font-weight:900;cursor:pointer;">OK</button>
-    </div>`;
-  document.body.appendChild(div);
-  setTimeout(()=>{if(div.parentNode)div.remove();},14000);
+// ─ LOGIN ─
+window.loginAdmin=async()=>{
+  const user=document.getElementById('adminUser').value.trim();
+  const pin=document.getElementById('adminPin').value;
+  if(!user||!pin)return toast('INGRESA TUS CREDENCIALES');
+  if(user.toLowerCase()==='darcor'&&pin==='2210'){grant(user);return;}
+  try{
+    const q=query(collection(db,'staff'),where('user','==',user),where('pin','==',pin));
+    const snap=await getDocs(q);
+    if(!snap.empty)grant(user);else toast('ACCESO DENEGADO','rd');
+  }catch{toast('ERROR DE CONEXIÓN','rd');}
+};
+function grant(user){
+  document.getElementById('adminAuth').style.display='none';
+  document.getElementById('adminDashboard').style.display='flex';
+  toast('BIENVENIDO '+user.toUpperCase()+' ⚡','gr');
 }
 
-// LISTENER CLANES
-let confirmedClans=[];
-onSnapshot(query(collection(db,'clanes'),orderBy('fecha','desc')),snap=>{
-  confirmedClans=[];
-  let html='',finHtml='',admHtml='',selHtml='<option value="">-- SELECCIONAR CLAN --</option>';
-  clanKDStats=[];
-
-  snap.forEach(d=>{
-    const c=d.data(),id=d.id;
-    const players=[c.p1,c.p2,c.p3,c.p4].filter(Boolean);
-    if(c.checkedIn)confirmedClans.push(c.name);
-    clanKDStats.push({name:c.name,players,avgKD:0,totalKD:0,count:0});
-
-    html+=`<div class="sqc ${c.checkedIn?'ok':''}">
-      <div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="font-size:8px;font-weight:900;text-transform:uppercase;color:${c.checkedIn?'var(--gn)':'var(--or)'};margin-bottom:2px;">${c.checkedIn?'✅ CONFIRMADO':'⏳ PENDIENTE'}</div>
-        <div class="fo font-black text-sm italic" style="color:var(--or);">${c.name}</div>
-      </div>
-      ${players.map((p,i)=>`<div class="sqph">
-        <span style="font-size:8px;color:#444;font-weight:900;">${i===0?'👑 CAP':'⚔️ OP'+(i+1)}</span>
-        <span class="fm" style="font-size:10px;" data-pid="${p}">${p.split('#')[0]}</span>
-      </div>`).join('')}
-      <div style="padding:7px 12px;background:rgba(0,0,0,0.25);display:flex;justify-content:space-between;font-size:8px;font-weight:900;color:#444;text-transform:uppercase;">
-        <span>REF: <span style="color:var(--bl);">${c.payRef||'-'}</span></span>
-        <span>${c.phone?'📱'+c.phone.slice(-4):''}</span>
-      </div>
-    </div>`;
-
-    finHtml+=`<tr>
-      <td class="atd font-black" style="color:#fff;font-style:italic;">${c.name}</td>
-      <td class="atd" style="color:var(--bl);">${c.payRef}</td>
-      <td class="atd font-black ${c.checkedIn?'text-green-400':'text-red-400'}">${c.checkedIn?'✅ CONF.':'❌ PEND.'}</td>
-      <td class="atd" style="text-align:right;">
-        <button onclick="window.toggleCI('${id}',${c.checkedIn})"
-          style="background:#1c1c1c;color:#ccc;padding:4px 9px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">${c.checkedIn?'UNCHECK':'CHECK ✓'}</button>
-      </td>
-    </tr>`;
-
-    admHtml+=`<tr>
-      <td class="atd font-black" style="color:var(--or);font-style:italic;">${c.name}</td>
-      <td class="atd" style="font-size:10px;">${players.join('<br>')}</td>
-      <td class="atd" style="color:var(--gn);font-size:10px;">${c.phone||'-'}</td>
-      <td class="atd">
-        <button onclick="window.editClan('${id}','${c.name}','${c.p1||''}','${c.p2||''}','${c.p3||''}','${c.phone||''}')"
-          style="background:rgba(59,130,246,0.15);color:var(--bl);padding:4px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;margin-right:4px;">EDITAR</button>
-        <button onclick="window.delFire('clanes','${id}')"
-          style="background:rgba(239,68,68,0.1);color:#f87171;padding:4px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">DEL</button>
-      </td>
-    </tr>`;
-    selHtml+=`<option value="${c.name}">${c.name}</option>`;
-  });
-
-  const grid=document.getElementById('clanGrid');
-  if(grid)grid.innerHTML=html||`<div style="grid-column:1/-1;text-align:center;padding:50px;opacity:.2;"><i class="fas fa-satellite-dish" style="font-size:2rem;display:block;margin-bottom:8px;"></i><p class="fo font-black" style="font-size:11px;text-transform:uppercase;">Buscando señales tácticas...</p></div>`;
-  const fin=document.getElementById('adm_finance_table');if(fin)fin.innerHTML=finHtml;
-  const adm=document.getElementById('adm_clans_table');if(adm)adm.innerHTML=admHtml;
-  ['metaClanSelector','score_clan_sel','stat_clan_sel'].forEach(sid=>{const el=document.getElementById(sid);if(el)el.innerHTML=selHtml;});
-  document.getElementById('clanCounter').textContent=snap.size;
-
-  // KD simulado (reemplazar con API Activision en producción)
-  setTimeout(()=>{
-    document.querySelectorAll('[data-pid]').forEach(el=>{
-      const pid=el.dataset.pid;
-      const kd=(Math.random()*(2.8-.5)+.5).toFixed(2);
-      const col=kd>=2?'var(--gn)':kd>=1.3?'#eab308':'var(--rd)';
-      el.innerHTML=`${pid.split('#')[0]} <span class="fo" style="font-size:8px;color:${col};">KD ${kd}</span>`;
-      clanKDStats.forEach(c=>{
-        if(c.players.includes(pid)){c.totalKD=(c.totalKD||0)+parseFloat(kd);c.count=(c.count||0)+1;c.avgKD=c.totalKD/c.count;}
-      });
-    });
-  },700);
-
-  // Scores table
-  const sa=document.getElementById('adm_scores_table');
-  if(sa){
-    const sc=JSON.parse(localStorage.getItem('dae_ts11'))||[];
-    sa.innerHTML=sc.map((s,i)=>`<tr>
-      <td class="atd font-black">${s.clan}</td>
-      <td class="atd" style="color:var(--bl);">${s.pos}</td>
-      <td class="atd" style="color:var(--or);">${s.kills}</td>
-      <td class="atd fo font-black" style="color:var(--gn);">${s.pts}</td>
-      <td class="atd"><button onclick="(()=>{let sc=JSON.parse(localStorage.getItem('dae_ts11')||'[]');sc.splice(${i},1);localStorage.setItem('dae_ts11',JSON.stringify(sc));tourneyScores=sc;renderRanking();})()"
-        style="background:rgba(239,68,68,0.1);color:#f87171;padding:3px 8px;border-radius:5px;font-size:9px;font-weight:900;border:none;cursor:pointer;">DEL</button></td>
-    </tr>`).join('');
-  }
-
-  window.generateBrackets=()=>{
-    if(confirmedClans.length<2)return toast('MÍNIMO 2 CLANES CON CHECK-IN');
-    const s=[...confirmedClans].sort(()=>.5-Math.random());
-    const d=document.getElementById('bracketDisplay');d.innerHTML='';
-    for(let i=0;i<s.length;i+=2){
-      if(s[i+1])d.innerHTML+=`<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:14px 16px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;">
-        <span class="fo font-black italic text-sm" style="color:var(--or);">${s[i]}</span>
-        <span style="color:#fff;font-weight:900;padding:0 10px;">⚔️ VS ⚔️</span>
-        <span class="fo font-black italic text-sm" style="color:var(--bl);">${s[i+1]}</span>
-      </div>`;
-      else d.innerHTML+=`<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,136,0,0.15);padding:14px 16px;border-radius:10px;text-align:center;">
-        <span class="fo font-black italic text-sm" style="color:var(--or);">${s[i]}</span>
-        <div style="font-size:9px;color:#555;margin-top:3px;font-weight:900;">BYE — PASE DIRECTO</div>
-      </div>`;
-    }
-  };
+// ─ STAFF ─
+window.addStaff=async()=>{
+  const user=document.getElementById('new_staff_user').value.trim().toUpperCase();
+  const pin=document.getElementById('new_staff_pin').value;
+  if(!user||!pin)return toast('COMPLETA LOS CAMPOS');
+  await addDoc(collection(db,'staff'),{user,pin});
+  toast('STAFF REGISTRADO','gr');
+  document.getElementById('new_staff_user').value='';
+  document.getElementById('new_staff_pin').value='';
+};
+onSnapshot(collection(db,'staff'),snap=>{
+  const el=document.getElementById('staffList');
+  if(el)el.innerHTML=snap.docs.map(d=>`<div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.04);padding:7px 10px;border-radius:7px;"><span style="font-size:10px;font-weight:900;text-transform:uppercase;color:var(--bl);font-style:italic;">${d.data().user}</span><button onclick="window.delFire('staff','${d.id}')" style="color:var(--rd);background:none;border:none;cursor:pointer;"><i class="fas fa-trash"></i></button></div>`).join('');
 });
 
-// TOURNEY
+// ─ TORNEOS ─
 window.saveTourney=async()=>{
   const name=document.getElementById('t_name').value.trim();
   const prize=document.getElementById('t_prize').value.trim();
@@ -1329,13 +1053,10 @@ window.saveTourney=async()=>{
 };
 onSnapshot(collection(db,'torneos'),snap=>{
   const active=snap.docs.map(d=>d.data()).find(t=>t.status==='Activo');
-  if(active){
-    document.getElementById('torneyName').textContent=active.name;
-    document.getElementById('torneyPrize').textContent='PREMIO: '+(active.prize||'Por definir');
-  }
+  if(active){document.getElementById('torneyName').textContent=active.name;document.getElementById('torneyPrize').textContent='PREMIO: '+(active.prize||'Por definir');}
 });
 
-// HELPERS
+// ─ HELPERS ─
 window.toggleCI=async(id,cur)=>{
   await updateDoc(doc(db,'clanes',id),{checkedIn:!cur});
   toast(cur?'CHECK-IN REMOVIDO':'CHECK-IN CONFIRMADO ✓',cur?'':'gr');
@@ -1343,11 +1064,11 @@ window.toggleCI=async(id,cur)=>{
 window.delFire=async(col,id)=>{if(confirm('¿ELIMINAR?'))await deleteDoc(doc(db,col,id));};
 window.editClan=async(id,name,p1,p2,p3,phone)=>{
   const players=[p1,p2,p3].filter(Boolean);
-  const a=prompt(`EDITAR: ${name}\n1=Nombre  2=Jugadores  3=Agregar  4=Eliminar`,'2');
+  const a=prompt('EDITAR: '+name+'\n1=Nombre  2=Jugadores  3=Agregar jugador  4=Eliminar jugador','2');
   if(!a)return;
   try{
     if(a==='1'){const n=prompt('Nuevo nombre:',name);if(n)await updateDoc(doc(db,'clanes',id),{name:n.toUpperCase()});}
-    if(a==='2'){const u=players.map((j,i)=>prompt(`Jugador ${i+1}`,j));await updateDoc(doc(db,'clanes',id),{p1:u[0]||'',p2:u[1]||'',p3:u[2]||''});}
+    if(a==='2'){const u=players.map((j,i)=>prompt('Jugador '+(i+1)+':',j));await updateDoc(doc(db,'clanes',id),{p1:u[0]||'',p2:u[1]||'',p3:u[2]||''});}
     if(a==='3'){const n=prompt('Nuevo jugador:');if(n){players.push(n);await updateDoc(doc(db,'clanes',id),{p1:players[0]||'',p2:players[1]||'',p3:players[2]||'',p4:players[3]||''});}}
     if(a==='4'){const i=parseInt(prompt('Número (1-4):')-1);players.splice(i,1);await updateDoc(doc(db,'clanes',id),{p1:players[0]||'',p2:players[1]||'',p3:players[2]||'',p4:players[3]||''});}
     toast('ACTUALIZADO ✓','gr');
